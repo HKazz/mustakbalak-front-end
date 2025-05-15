@@ -1,0 +1,849 @@
+/* Reset text colors */
+* {
+  color: #000000 !important;
+}
+
+/* Container styles with background image */
+.signup-container,
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f5f5f5 !important;
+  position: relative;
+  padding-top: 5rem !important;
+}
+
+.signup-container::before,
+.login-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/src/assets/background.jpg') center/cover no-repeat;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+/* Paper styles with solid background */
+.signup-paper,
+.login-paper {
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+/* Title styles */
+.signup-title,
+.login-title {
+  text-align: center;
+  color: #0a66c2 !important;
+  margin-bottom: 2rem !important;
+  font-weight: 700 !important;
+  font-size: 2.5rem !important;
+  letter-spacing: -0.5px;
+  text-shadow: none;
+}
+
+.signup-form,
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-field {
+  margin-bottom: 16px;
+}
+
+.form-actions {
+  margin-top: 1rem;
+}
+
+.signup-button,
+.login-button {
+  background-color: #0a66c2 !important;
+  color: white !important;
+  padding: 0.75rem !important;
+  font-size: 1rem !important;
+  text-transform: none !important;
+  border-radius: 4px !important;
+  transition: background-color 0.2s !important;
+}
+
+.signup-button:hover,
+.login-button:hover {
+  background-color: #004182 !important;
+}
+
+.type-selection {
+  margin-top: 2rem;
+}
+
+.type-card {
+  background-color: #ffffff !important;
+  border: 2px solid #0a66c2 !important;
+  height: 100%;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.type-card:hover {
+  border-color: #0a66c2;
+}
+
+.error-message {
+  color: #d32f2f !important;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.1rem !important;
+  font-weight: 500 !important;
+}
+
+/* Password strength indicator */
+.password-strength {
+  margin-top: 0.5rem;
+}
+
+.strength-bar {
+  height: 4px;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.strength-text {
+  color: #000000 !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+}
+
+/* Country code selector */
+.country-code-select {
+  min-width: 200px;
+}
+
+.country-search {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .signup-paper,
+  .login-paper {
+    padding: 1rem;
+  }
+
+  .signup-title,
+  .login-title {
+    font-size: 2rem !important;
+  }
+
+  .type-card {
+    margin-bottom: 1rem;
+  }
+
+  .navbar a {
+    font-size: 1rem !important;
+    padding: 0.5rem !important;
+  }
+
+  .navbar .logo {
+    font-size: 1.3rem !important;
+  }
+}
+
+/* Toast notifications */
+.Toastify__toast {
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.Toastify__toast--success {
+  background-color: #4caf50;
+}
+
+.Toastify__toast--error {
+  background-color: #f44336;
+}
+
+/* Loading indicator */
+.loading-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Form sections */
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section-title {
+  color: #0a66c2;
+  margin-bottom: 1rem !important;
+  font-weight: 500 !important;
+}
+
+/* Address fields */
+.address-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* Password visibility toggle */
+.password-toggle {
+  cursor: pointer;
+}
+
+/* Back button */
+.back-button {
+  margin-right: 1rem;
+}
+
+/* Divider */
+.divider {
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.divider-text {
+  padding: 0 1rem;
+  color: #757575;
+}
+
+/* Hiring manager section */
+.hiring-manager-section {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.hiring-manager-button {
+  margin-top: 1rem;
+}
+
+.type-selection-cards {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.type-card .MuiCardContent-root {
+  padding: 2rem;
+  text-align: center;
+}
+
+.type-icon {
+  font-size: 3.5rem !important;
+  color: #0a66c2;
+  margin-bottom: 1.5rem;
+}
+
+.type-card h6 {
+  margin-bottom: 1rem;
+  color: #0a66c2 !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.3px;
+}
+
+.type-card .MuiTypography-body2 {
+  color: #000000 !important;
+  font-size: 1.1rem !important;
+  line-height: 1.6 !important;
+}
+
+.section-title {
+  color: #0a66c2 !important;
+  font-weight: 600 !important;
+  margin: 2rem 0 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(0,0,0,.15);
+  font-size: 1.5rem !important;
+  letter-spacing: -0.3px;
+}
+
+.form-field .MuiInputAdornment-root {
+  color: #0a66c2;
+}
+
+.form-field .MuiInputAdornment-root .MuiSvgIcon-root {
+  font-size: 1.5rem;
+}
+
+.form-field:hover .MuiInputAdornment-root {
+  color: #004182;
+}
+
+/* Phone field styles */
+.phone-field-container {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.country-flag {
+  margin-right: 12px;
+  font-size: 1.4rem;
+}
+
+.country-code {
+  color: #455a64;
+  margin-right: 12px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.country-name {
+  color: #0a66c2;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.MuiMenuItem-root {
+  padding: 12px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  font-size: 1.1rem !important;
+  font-weight: 400 !important;
+}
+
+/* Address field styles */
+.address-grid {
+  margin-top: 1.25rem;
+}
+
+.address-grid .MuiGrid-item {
+  padding-top: 0.75rem;
+}
+
+/* Password strength styles */
+.password-field-container {
+  margin-bottom: 0.75rem;
+}
+
+.strength-0 {
+  background-color: #e0e0e0 !important;
+}
+
+.strength-1 {
+  background-color: #ff1744 !important;
+}
+
+.strength-2 {
+  background-color: #ff9100 !important;
+}
+
+.strength-3 {
+  background-color: #00c853 !important;
+}
+
+.strength-4 {
+  background-color: #00e676 !important;
+}
+
+/* Password match indicator */
+.password-match-indicator {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.match-success {
+  color: #2e7d32 !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500 !important;
+}
+
+.match-error {
+  color: #d32f2f !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500 !important;
+}
+
+/* Input field focus state */
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #0a66c2 !important;
+  border-width: 2px !important;
+}
+
+/* Select field styles */
+.MuiSelect-select {
+  padding: 14px !important;
+  font-size: 1rem !important;
+}
+
+.MuiSelect-icon {
+  color: #0a66c2 !important;
+}
+
+/* Input field styles */
+.MuiTextField-root,
+.MuiFormControl-root {
+  background-color: #ffffff !important;
+}
+
+.MuiInputLabel-root {
+  color: #000000 !important;
+  font-size: 1.1rem !important;
+  font-weight: 500 !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: #0a66c2 !important;
+  font-weight: 600 !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: #000000 !important;
+}
+
+.MuiInputBase-input {
+  color: #000000 !important;
+  font-size: 1.1rem !important;
+  font-weight: 400 !important;
+  background-color: #ffffff !important;
+}
+
+/* Date input styles */
+.MuiInputBase-input[type="date"] {
+  padding: 14px !important;
+}
+
+/* Animation for form fields */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-field {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1976d2;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1565c0;
+}
+
+/* Add smooth scrolling to the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Stepper styles */
+.signup-stepper {
+  margin: 2rem 0;
+  padding: 1rem;
+  background-color: #ffffff !important;
+  border-radius: 8px;
+}
+
+.step-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0a66c2;
+  color: white;
+  border-radius: 50%;
+  font-size: 1.5rem;
+}
+
+.MuiStepLabel-label {
+  color: #000000 !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+}
+
+.MuiStepLabel-label.Mui-active {
+  color: #0a66c2 !important;
+  font-weight: 700 !important;
+}
+
+.MuiStepLabel-label.Mui-completed {
+  color: #2e7d32 !important;
+  font-weight: 600 !important;
+}
+
+.step-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.next-button {
+  background-color: #0a66c2 !important;
+  color: #ffffff !important;
+  padding: 0.75rem 2rem !important;
+  font-size: 1rem !important;
+  text-transform: none !important;
+  border-radius: 4px !important;
+  transition: background-color 0.2s !important;
+  font-weight: 600 !important;
+}
+
+.next-button:hover {
+  background-color: #004182 !important;
+}
+
+.back-button {
+  border-color: #0a66c2 !important;
+  color: #0a66c2 !important;
+  padding: 0.75rem 2rem !important;
+  font-size: 1rem !important;
+  text-transform: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.back-button:hover {
+  background-color: rgba(10, 102, 194, 0.04) !important;
+}
+
+.MuiStepConnector-line {
+  border-color: #e0e0e0 !important;
+}
+
+.MuiStepConnector-active .MuiStepConnector-line {
+  border-color: #0a66c2 !important;
+}
+
+.MuiStepConnector-completed .MuiStepConnector-line {
+  border-color: #2e7d32 !important;
+}
+
+/* Responsive adjustments for stepper */
+@media (max-width: 600px) {
+  .signup-stepper {
+    margin: 1rem 0;
+    padding: 0.5rem;
+  }
+
+  .step-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
+  }
+
+  .MuiStepLabel-label {
+    font-size: 1rem !important;
+  }
+
+  .step-actions {
+    flex-direction: column;
+  }
+
+  .next-button,
+  .back-button {
+    width: 100%;
+  }
+}
+
+/* Text color fixes */
+.MuiTypography-body2 {
+  color: #000000 !important;
+  font-size: 1.1rem !important;
+  line-height: 1.6 !important;
+}
+
+/* Ensure all text is visible */
+.MuiInputBase-input::placeholder {
+  color: #666666 !important;
+}
+
+.MuiInputLabel-shrink {
+  color: #0a66c2 !important;
+}
+
+/* Helper text */
+.MuiFormHelperText-root {
+  color: #000000 !important;
+  font-size: 1rem !important;
+}
+
+.MuiFormHelperText-root.Mui-error {
+  color: #d32f2f !important;
+}
+
+/* Address Information styles */
+.address-section {
+  background-color: #ffffff !important;
+  padding: 1.5rem !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+  margin-bottom: 2rem !important;
+}
+
+.address-section-title {
+  color: #0a66c2 !important;
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 1.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.address-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 1.5rem !important;
+  margin-top: 1rem !important;
+}
+
+.address-field {
+  width: 100% !important;
+}
+
+.address-field.full-width {
+  grid-column: 1 / -1 !important;
+}
+
+.address-field .MuiInputLabel-root {
+  color: #000000 !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+}
+
+.address-field .MuiOutlinedInput-root {
+  background-color: #ffffff !important;
+}
+
+.address-field .MuiOutlinedInput-input {
+  color: #000000 !important;
+  font-size: 1rem !important;
+  padding: 14px !important;
+}
+
+.address-field .MuiOutlinedInput-notchedOutline {
+  border-color: #e0e0e0 !important;
+}
+
+.address-field .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #0a66c2 !important;
+}
+
+.address-field .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #0a66c2 !important;
+  border-width: 2px !important;
+}
+
+/* Address field helper text */
+.address-field .MuiFormHelperText-root {
+  color: #666666 !important;
+  font-size: 0.875rem !important;
+  margin-top: 4px !important;
+}
+
+/* Address field error state */
+.address-field .Mui-error .MuiOutlinedInput-notchedOutline {
+  border-color: #d32f2f !important;
+}
+
+.address-field .Mui-error .MuiFormHelperText-root {
+  color: #d32f2f !important;
+}
+
+/* Address field focus state */
+.address-field .MuiInputLabel-root.Mui-focused {
+  color: #0a66c2 !important;
+}
+
+/* Address field placeholder */
+.address-field .MuiInputBase-input::placeholder {
+  color: #999999 !important;
+  opacity: 1 !important;
+}
+
+/* Responsive adjustments for address section */
+@media (max-width: 768px) {
+  .address-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .address-section {
+    padding: 1rem !important;
+  }
+
+  .address-section-title {
+    font-size: 1.2rem !important;
+  }
+
+  .address-field .MuiInputLabel-root {
+    font-size: 0.95rem !important;
+  }
+
+  .address-field .MuiOutlinedInput-input {
+    font-size: 0.95rem !important;
+    padding: 12px !important;
+  }
+}
+
+/* Address field animation */
+.address-field {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dropdown styles */
+.MuiFormControl-root .MuiInputLabel-root {
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+}
+
+.MuiFormControl-root .MuiSelect-select {
+  background-color: #fff;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-size: 1.1rem !important;
+  padding: 12px 14px !important;
+}
+
+.MuiFormControl-root .MuiSelect-select:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.MuiFormControl-root .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(0, 0, 0, 0.23);
+}
+
+.MuiFormControl-root .MuiSelect-select:focus {
+  background-color: #fff;
+}
+
+.MuiFormControl-root .MuiMenuItem-root {
+  transition: all 0.2s ease;
+  font-size: 1.1rem !important;
+  padding: 12px 14px !important;
+}
+
+.MuiFormControl-root .MuiMenuItem-root:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.MuiFormControl-root .MuiMenuItem-root.Mui-selected {
+  background-color: rgba(10, 102, 194, 0.12) !important;
+  color: #0a66c2 !important;
+  font-weight: 600 !important;
+}
+
+.MuiFormControl-root .MuiMenuItem-root.Mui-selected:hover {
+  background-color: rgba(10, 102, 194, 0.16) !important;
+}
+
+/* Selected value styling */
+.MuiSelect-select[aria-expanded="false"] {
+  background-color: rgba(10, 102, 194, 0.08) !important;
+  color: #0a66c2 !important;
+  font-weight: 600 !important;
+}
+
+/* Dropdown menu styling */
+.MuiPaper-root.MuiMenu-paper {
+  max-height: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+/* Form field spacing */
+.form-field {
+  margin-bottom: 16px;
+}
+
+/* Error message styling */
+.MuiFormHelperText-root {
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+/* Label styling */
+.MuiInputLabel-root {
+  font-weight: 500;
+}
+
+/* Ensure text is visible */
+.MuiSelect-select {
+  color: #000000 !important;
+}
+
+.MuiSelect-select.Mui-selected {
+  color: #0a66c2 !important;
+}
+
+/* Dropdown icon color */
+.MuiSelect-icon {
+  color: #0a66c2 !important;
+}
+
+/* Focus state */
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #0a66c2 !important;
+  border-width: 2px !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: #0a66c2 !important;
+} 

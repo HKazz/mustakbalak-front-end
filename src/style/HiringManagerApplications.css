@@ -1,0 +1,210 @@
+.applications-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: calc(100vh - 64px);
+  background-color: #f5f5f5;
+}
+
+.page-title {
+  color: #1a237e;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  margin-bottom: 2rem !important;
+  text-align: center;
+}
+
+.application-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+}
+
+.application-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #1a237e;
+}
+
+.application-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.application-info {
+  flex: 1;
+}
+
+.job-info,
+.applicant-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-icon {
+  color: #1a237e;
+  font-size: 1.2rem !important;
+}
+
+.status-chip {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 500;
+  text-transform: capitalize;
+  min-width: 100px;
+  text-align: center;
+}
+
+.status-chip.pending {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.status-chip.accepted {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-chip.rejected {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+/* Dialog Styles */
+.application-dialog .MuiDialog-paper {
+  border-radius: 10px;
+}
+
+.dialog-title {
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-button {
+  color: #666;
+}
+
+.dialog-content {
+  padding: 1.5rem;
+}
+
+.job-info-section,
+.applicant-info-section,
+.application-status-section {
+  margin-bottom: 2rem;
+}
+
+.job-meta,
+.applicant-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+}
+
+.dialog-icon {
+  color: #1a237e;
+  font-size: 1.1rem !important;
+}
+
+.job-type-chip {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.dialog-divider {
+  margin: 1.5rem 0;
+}
+
+.dialog-actions {
+  padding: 1rem 1.5rem;
+  background-color: #f8f9fa;
+}
+
+.close-dialog-button {
+  color: #666;
+  border-color: #666;
+}
+
+.reject-button {
+  background-color: #d32f2f;
+  color: white;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.reject-button:hover {
+  background-color: #b71c1c;
+}
+
+.accept-button {
+  background-color: #2e7d32;
+  color: white;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.accept-button:hover {
+  background-color: #1b5e20;
+}
+
+/* Loading and Error States */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.alert-container {
+  margin-top: 2rem;
+}
+
+.no-applications {
+  text-align: center;
+  color: #666;
+  padding: 3rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .applications-container {
+    padding: 1rem;
+  }
+
+  .application-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .job-meta,
+  .applicant-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+} 

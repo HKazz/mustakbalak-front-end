@@ -1,15 +1,14 @@
-import {useContext} from 'react'
-import { authContext } from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext'
 import { Navigate } from 'react-router'
 
 function ValidateIsLoggedOut(props) {
-    const {user} = useContext(authContext)
+    const { user } = useAuth()
 
     if(!user){
-        return( props.children)
+        return props.children
     }
     else{
-        return(<Navigate to="/"/>)
+        return <Navigate to="/"/>
     }
 }
 
