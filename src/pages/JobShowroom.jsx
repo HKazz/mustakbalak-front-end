@@ -26,6 +26,7 @@ import {
   InputLabel,
   Collapse,
   Paper,
+  Autocomplete,
 } from '@mui/material';
 import {
   Work as WorkIcon,
@@ -42,6 +43,83 @@ import {
 } from '@mui/icons-material';
 import '../style/JobShowroom.css';
 import { toast } from 'react-hot-toast';
+
+const FIELDS_OF_INTEREST = [
+  // Technology
+  'Software Development',
+  'Web Development',
+  'Mobile Development',
+  'Frontend Development',
+  'Backend Development',
+  'Full Stack Development',
+  'DevOps',
+  'Cloud Computing',
+  'Artificial Intelligence',
+  'Machine Learning',
+  'Data Science',
+  'Big Data',
+  'Cybersecurity',
+  'Network Engineering',
+  'Database Management',
+  'System Administration',
+  'Quality Assurance',
+  'UI/UX Design',
+  'Game Development',
+  'Blockchain',
+  'IoT Development',
+  
+  // Business & Management
+  'Project Management',
+  'Product Management',
+  'Business Analysis',
+  'Business Intelligence',
+  'Digital Marketing',
+  'Content Marketing',
+  'Social Media Marketing',
+  'SEO/SEM',
+  'E-commerce',
+  'Sales',
+  'Customer Success',
+  'Human Resources',
+  'Finance',
+  'Accounting',
+  'Consulting',
+  
+  // Creative & Design
+  'Graphic Design',
+  'Motion Graphics',
+  'Video Production',
+  'Photography',
+  '3D Modeling',
+  'Animation',
+  'Architecture',
+  'Interior Design',
+  'Fashion Design',
+  
+  // Healthcare & Science
+  'Healthcare IT',
+  'Medical Research',
+  'Biotechnology',
+  'Pharmaceuticals',
+  'Environmental Science',
+  'Data Analysis',
+  'Research & Development',
+  
+  // Education & Training
+  'E-learning',
+  'Educational Technology',
+  'Technical Training',
+  'Corporate Training',
+  
+  // Other
+  'Legal Tech',
+  'Real Estate Tech',
+  'FinTech',
+  'EdTech',
+  'HealthTech',
+  'GreenTech',
+  'Other'
+];
 
 const JobShowroom = () => {
   const navigate = useNavigate();
@@ -60,6 +138,7 @@ const JobShowroom = () => {
     education: '',
     salaryRange: '',
     sortBy: 'newest',
+    fields: []
   });
   const [appliedFilters, setAppliedFilters] = useState({
     country: '',
@@ -70,6 +149,7 @@ const JobShowroom = () => {
     education: '',
     salaryRange: '',
     sortBy: 'newest',
+    fields: []
   });
   const [appliedJobs, setAppliedJobs] = useState(new Set());
   const [userType, setUserType] = useState(null);
@@ -215,9 +295,17 @@ const JobShowroom = () => {
       education: '',
       salaryRange: '',
       sortBy: 'newest',
+      fields: []
     };
     setFilters(resetFilters);
     setAppliedFilters(resetFilters);
+  };
+
+  const handleFieldsChange = (event, newValue) => {
+    setFilters(prev => ({
+      ...prev,
+      fields: newValue
+    }));
   };
 
   const handleJobClick = (job) => {
@@ -264,6 +352,10 @@ const JobShowroom = () => {
     const matchesEducation = !appliedFilters.education || 
       job.education === appliedFilters.education;
 
+    // Fields filter
+    const matchesFields = appliedFilters.fields.length === 0 || 
+      appliedFilters.fields.some(field => job.fields?.includes(field));
+
     // Salary range filter
     let matchesSalary = true;
     if (appliedFilters.salaryRange) {
@@ -274,7 +366,7 @@ const JobShowroom = () => {
     }
 
     return matchesCountry && matchesJobType && matchesExperience && 
-           matchesEducation && matchesSalary;
+           matchesEducation && matchesSalary && matchesFields;
   }) : [];
 
   const sortedAndFilteredJobs = sortJobs(filteredJobs);
@@ -395,63 +487,116 @@ const JobShowroom = () => {
           </Button>
         </Box>
 
-        <Grid container spacing={2} className="basic-filters">
-          <Grid item xs={12} md={4}>
-            <FormControl fullWidth>
-              <InputLabel>Select Country</InputLabel>
-              <Select
-                value={filters.country}
-                onChange={(e) => handleFilterChange('country', e.target.value)}
-                label="Select Country"
-              >
-                <MenuItem value="">All Countries</MenuItem>
-                {countries.map((country) => (
-                  <MenuItem key={country} value={country}>
-                    {country}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <FormControl fullWidth>
-              <InputLabel>Select Job Type</InputLabel>
-              <Select
-                value={filters.jobType}
-                onChange={(e) => handleFilterChange('jobType', e.target.value)}
-                label="Select Job Type"
-              >
-                <MenuItem value="">All Job Types</MenuItem>
-                {jobTypes.map((type) => (
-                  <MenuItem key={type} value={type}>
-                    {type}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <FormControl fullWidth>
-              <InputLabel>Sort By</InputLabel>
-              <Select
-                value={filters.sortBy}
-                onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-                label="Sort By"
-              >
-                {sortOptions.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-
         <Collapse in={showAdvancedFilters}>
           <Grid container spacing={2} className="advanced-filters">
+            <Grid item xs={12}>
+              <Box className="fields-header" sx={{ mb: 2 }}>
+                <Typography variant="h6" sx={{ color: '#0a66c2', fontWeight: 600 }}>
+                  Fields of Interest
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Select the fields you're interested in
+                </Typography>
+              </Box>
+              <Autocomplete
+                multiple
+                options={FIELDS_OF_INTEREST}
+                value={filters.fields}
+                onChange={handleFieldsChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Fields of Interest"
+                    placeholder="Select fields"
+                    fullWidth
+                  />
+                )}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => {
+                    const { key, ...chipProps } = getTagProps({ index });
+                    return (
+                      <Chip
+                        key={key}
+                        label={option}
+                        {...chipProps}
+                        sx={{
+                          backgroundColor: '#0a66c2',
+                          color: 'white',
+                          '& .MuiChip-deleteIcon': {
+                            color: 'white',
+                            '&:hover': {
+                              color: '#e0e0e0'
+                            }
+                          }
+                        }}
+                      />
+                    );
+                  })
+                }
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Divider sx={{ my: 3 }}>
+                <Typography variant="subtitle1" color="textSecondary">
+                  Additional Filters
+                </Typography>
+              </Divider>
+            </Grid>
+
+            <Grid item xs={12} md={4}>
+              <FormControl fullWidth>
+                <InputLabel>Select Country</InputLabel>
+                <Select
+                  value={filters.country}
+                  onChange={(e) => handleFilterChange('country', e.target.value)}
+                  label="Select Country"
+                >
+                  <MenuItem value="">All Countries</MenuItem>
+                  {countries.map((country) => (
+                    <MenuItem key={country} value={country}>
+                      {country}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={4}>
+              <FormControl fullWidth>
+                <InputLabel>Select Job Type</InputLabel>
+                <Select
+                  value={filters.jobType}
+                  onChange={(e) => handleFilterChange('jobType', e.target.value)}
+                  label="Select Job Type"
+                >
+                  <MenuItem value="">All Job Types</MenuItem>
+                  {jobTypes.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={4}>
+              <FormControl fullWidth>
+                <InputLabel>Sort By</InputLabel>
+                <Select
+                  value={filters.sortBy}
+                  onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+                  label="Sort By"
+                >
+                  {sortOptions.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
             <Grid item xs={12} md={4}>
               <FormControl fullWidth>
                 <InputLabel>Experience Level</InputLabel>

@@ -288,6 +288,7 @@ function CompleteProfile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        setLoading(true);
         const token = localStorage.getItem('token');
         if (!token) {
           setError('Authentication error. Please log in again.');
@@ -304,19 +305,27 @@ function CompleteProfile() {
         );
 
         const userData = response.data.user;
+        console.log('Fetched user data:', userData); // Debug log
         
         // Set form data with user's current information
         setFormData({
           nationality: userData.nationality || '',
           DOB: userData.DOB ? new Date(userData.DOB) : null,
-          certificates: userData.certificates?.length > 0 ? userData.certificates : [{
+          certificates: userData.certificates?.length > 0 ? userData.certificates.map(cert => ({
+            ...cert,
+            date: cert.date ? new Date(cert.date) : null
+          })) : [{
             name: '',
             issuer: '',
             date: null,
             description: '',
             type: ''
           }],
-          experience: userData.experience?.length > 0 ? userData.experience : [{
+          experience: userData.experience?.length > 0 ? userData.experience.map(exp => ({
+            ...exp,
+            startDate: exp.startDate ? new Date(exp.startDate) : null,
+            endDate: exp.endDate ? new Date(exp.endDate) : null
+          })) : [{
             title: '',
             company: '',
             startDate: null,
@@ -327,7 +336,10 @@ function CompleteProfile() {
           fields: userData.fields || [],
           currentPosition: userData.currentPosition || '',
           company: userData.company || '',
-          education: userData.education?.length > 0 ? userData.education : [{
+          education: userData.education?.length > 0 ? userData.education.map(edu => ({
+            ...edu,
+            graduationDate: edu.graduationDate ? new Date(edu.graduationDate) : null
+          })) : [{
             degree: '',
             field: '',
             institution: '',
@@ -338,9 +350,23 @@ function CompleteProfile() {
 
         // Store original data for comparison
         setOriginalData(userData);
+        
+        // Mark all steps as completed if user has existing data
+        if (userData) {
+          const completedStepsArray = [];
+          if (userData.nationality || userData.DOB) completedStepsArray.push(0);
+          if (userData.education?.length > 0) completedStepsArray.push(1);
+          if (userData.experience?.length > 0) completedStepsArray.push(2);
+          if (userData.certificates?.length > 0) completedStepsArray.push(3);
+          if (userData.currentPosition || userData.company) completedStepsArray.push(4);
+          if (userData.fields?.length > 0) completedStepsArray.push(5);
+          setCompletedSteps(completedStepsArray);
+        }
       } catch (err) {
         console.error('Error fetching profile:', err);
         setError('Failed to load profile data. Please try again.');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -1000,17 +1026,20 @@ function CompleteProfile() {
                   />
                 )}
                 renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip
-                      key={index}
-                      label={option}
-                      {...getTagProps({ index })}
-                      sx={{
-                        backgroundColor: '#0a66c2',
-                        color: 'white'
-                      }}
-                    />
-                  ))
+                  value.map((option, index) => {
+                    const { key, ...chipProps } = getTagProps({ index });
+                    return (
+                      <Chip
+                        key={key}
+                        label={option}
+                        {...chipProps}
+                        sx={{
+                          backgroundColor: '#0a66c2',
+                          color: 'white'
+                        }}
+                      />
+                    );
+                  })
                 }
               />
             </CardContent>
