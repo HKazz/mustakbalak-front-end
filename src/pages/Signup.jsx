@@ -995,9 +995,9 @@ function Signup() {
                       fontWeight: 600,
                       transition: 'all 0.3s ease'
                     }}
-                  >
-                    {step.label}
-                  </Typography>
+                >
+                  {step.label}
+                    </Typography>
                 </StepLabel>
                 <StepContent sx={{ 
                   borderLeft: '2px solid',
@@ -1011,7 +1011,7 @@ function Signup() {
                     borderRadius: 1,
                     boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
                   }}>
-                    {step.content}
+                  {step.content}
                   </Box>
                   <Box className="step-actions" sx={{ mt: 3 }}>
                     <Button
@@ -1052,7 +1052,7 @@ function Signup() {
                 </StepContent>
               </Step>
             ))}
-          </Stepper>
+        </Stepper>
 
           <Divider sx={{ my: 4 }}>
             <Typography variant="body2" color="text.secondary">
@@ -1086,20 +1086,20 @@ function Signup() {
         </Box>
       </Paper>
 
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={6000}
           onClose={handleCloseSnackbar}
-          severity={snackbar.severity}
-          sx={{ width: "100%" }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity={snackbar.severity}
+          sx={{ width: "100%" }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
 
       <ToastContainer />
     </div>
