@@ -115,7 +115,8 @@ const HiringManagerSignup = () => {
       phoneNumber: Yup.string()
         .required("Phone number is required")
         .matches(/^[0-9]+$/, "Phone number must contain only digits")
-        .min(10, "Phone number must be at least 10 digits"),
+        .min(8, "Phone number must be at least 8 digits")
+        .max(11, "Phone number cannot exceed 11 digits"),
       company: Yup.string()
         .required("Company name is required"),
       currentPosition: Yup.string()
@@ -151,9 +152,31 @@ const HiringManagerSignup = () => {
         console.log('Attempting signup with:', values);
         console.log('Backend URL:', import.meta.env.VITE_BACKEND_URL);
 
+        // Format the data according to the backend model
+        const signupData = {
+          username: values.username,
+          fullName: values.fullName,
+          email: values.email,
+          phoneNumber: values.phoneNumber,
+          password: values.password,
+          currentPosition: values.currentPosition,
+          company: values.company,
+          department: values.department,
+          role: values.role,
+          companySize: values.companySize,
+          industry: values.industry,
+          address: {
+            street: values.address.street,
+            city: values.address.city,
+            state: values.address.state,
+            country: values.address.country,
+            postalCode: values.address.postalCode
+          }
+        };
+
         const response = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/api/hiring-manager/signup`,
-          values,
+          signupData,
           {
             headers: {
               'Content-Type': 'application/json',
@@ -176,18 +199,28 @@ const HiringManagerSignup = () => {
           // Show success message
           setSnackbar({
             open: true,
-            message: "Signup successful!",
+            message: "Account created successfully! Redirecting to dashboard...",
             severity: "success",
           });
 
-          toast.success("Signup successful!");
+          toast.success("Account created successfully!");
 
-          // Redirect to dashboard
-          navigate("/hiring-manager/dashboard", { replace: true });
+          // Redirect to dashboard after a short delay
+          setTimeout(() => {
+            navigate("/hiring-manager/dashboard", { replace: true });
+          }, 2000);
         }
       } catch (error) {
         console.error("Signup error:", error);
-        const errorMessage = error.response?.data?.message || "Failed to signup. Please try again.";
+        let errorMessage = "Failed to create account. ";
+        
+        if (error.response) {
+          errorMessage += error.response.data?.message || "Please check your information and try again.";
+        } else if (error.request) {
+          errorMessage += "No response from server. Please check your connection.";
+        } else {
+          errorMessage += error.message || "Please try again.";
+        }
         
         setErrors({ submit: errorMessage });
         setSnackbar({
@@ -235,19 +268,68 @@ const HiringManagerSignup = () => {
   const validateStep = (stepIndex, values) => {
     switch (stepIndex) {
       case 0: // Personal Information
-        return values.username && values.fullName ? true : false;
+        return values.username && values.fullName && 
+               !formik.errors.username && !formik.errors.fullName;
       case 1: // Company Information
-        return values.company && values.currentPosition ? true : false;
+        return values.company && values.currentPosition && values.department && 
+               values.role && values.companySize && values.industry &&
+               !formik.errors.company && !formik.errors.currentPosition && 
+               !formik.errors.department && !formik.errors.role && 
+               !formik.errors.companySize && !formik.errors.industry;
       case 2: // Contact Information
-        return values.email && values.phoneNumber && values.countryCode ? true : false;
+        return values.email && values.phoneNumber && values.countryCode &&
+               !formik.errors.email && !formik.errors.phoneNumber && 
+               !formik.errors.countryCode;
       case 3: // Address Information
-        return values.address.street && values.address.city && values.address.state && 
-               values.address.country && values.address.postalCode ? true : false;
+        return values.address.street && values.address.city && 
+               values.address.state && values.address.country && 
+               values.address.postalCode &&
+               !formik.errors.address?.street && !formik.errors.address?.city &&
+               !formik.errors.address?.state && !formik.errors.address?.country &&
+               !formik.errors.address?.postalCode;
       case 4: // Security
-        return values.password && values.confirmPassword ? true : false;
+        return values.password && values.confirmPassword &&
+               !formik.errors.password && !formik.errors.confirmPassword;
       default:
         return false;
     }
+  };
+
+  const handleNext = () => {
+    if (validateStep(activeStep, formik.values)) {
+      setActiveStep((prevStep) => prevStep + 1);
+    } else {
+      // Mark all fields in the current step as touched to show validation errors
+      const currentStepFields = getStepFields(activeStep);
+      currentStepFields.forEach(field => {
+        formik.setFieldTouched(field, true);
+      });
+    }
+  };
+
+  const getStepFields = (stepIndex) => {
+    switch (stepIndex) {
+      case 0:
+        return ['username', 'fullName'];
+      case 1:
+        return ['company', 'currentPosition', 'department', 'role', 'companySize', 'industry'];
+      case 2:
+        return ['email', 'phoneNumber', 'countryCode'];
+      case 3:
+        return ['address.street', 'address.city', 'address.state', 'address.country', 'address.postalCode'];
+      case 4:
+        return ['password', 'confirmPassword'];
+      default:
+        return [];
+    }
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevStep) => prevStep - 1);
+  };
+
+  const handleStepClick = (step) => {
+    setActiveStep(step);
   };
 
   const steps = [
@@ -688,18 +770,6 @@ const HiringManagerSignup = () => {
     }
   ];
 
-  const handleNext = () => {
-    setActiveStep((prevStep) => prevStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevStep) => prevStep - 1);
-  };
-
-  const handleStepClick = (step) => {
-    setActiveStep(step);
-  };
-
   return (
     <div className="signup-container">
       <Paper elevation={3} className="signup-paper">
@@ -727,8 +797,9 @@ const HiringManagerSignup = () => {
                                 Boolean(formik.errors[Object.keys(formik.values)[index]]);
 
               return (
-                <Step key={step.label} completed={isStepValid} error={isStepError}>
+                <Step key={step.label} completed={Boolean(isStepValid)}>
                   <StepLabel
+                    error={isStepError}
                     StepIconComponent={() => (
                       <Box className={`step-icon ${isStepValid ? 'step-completed' : isStepError ? 'step-error' : ''}`}>
                         {isStepValid ? <CheckCircle /> : isStepError ? <Error /> : step.icon}

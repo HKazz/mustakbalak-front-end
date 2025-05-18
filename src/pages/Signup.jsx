@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { 
   TextField, 
@@ -27,7 +27,8 @@ import {
   Step,
   StepLabel,
   StepContent,
-  FormHelperText
+  FormHelperText,
+  Divider
 } from '@mui/material';
 import { 
   Person, 
@@ -52,6 +53,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../context/AuthContext';
 import '../style/SignupPage.css';
 
 // Password strength checker
@@ -184,10 +186,12 @@ const validationSchema = yup.object({
   currentPosition: yup.string().when('userType', {
     is: 'hiring manager',
     then: (schema) => schema.required('Current position is required'),
+    otherwise: (schema) => schema.notRequired()
   }),
   company: yup.string().when('userType', {
     is: 'hiring manager',
     then: (schema) => schema.required('Company is required'),
+    otherwise: (schema) => schema.notRequired()
   }),
   password: yup.string()
     .required('Password is required')
@@ -198,6 +202,7 @@ const validationSchema = yup.object({
   confirmPassword: yup.string()
     .required('Please confirm your password')
     .oneOf([yup.ref('password')], 'Passwords must match'),
+  userType: yup.string().required('User type is required')
 });
 
 // Add this function after the validationSchema
@@ -222,6 +227,7 @@ const validateStep = (stepIndex, values) => {
 // signup page component
 function Signup() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [activeStep, setActiveStep] = useState(0);
   const [selectedType, setSelectedType] = useState(null);
   const [passwordStrength, setPasswordStrength] = useState(0);
@@ -826,32 +832,91 @@ function Signup() {
     setActiveStep(step);
   };
 
+  const isStepValid = (stepIndex) => {
+    switch (stepIndex) {
+      case 0: // Account Type
+        return formik.values.userType ? true : false;
+      case 1: // Personal Information
+        return formik.values.username && formik.values.fullName ? true : false;
+      case 2: // Contact Information
+        return formik.values.email && formik.values.phoneNumber && formik.values.countryCode ? true : false;
+      case 3: // Address Information
+        return formik.values.addressType && formik.values.streetNumber && formik.values.streetName && 
+               formik.values.district && formik.values.city && formik.values.postalCode ? true : false;
+      case 4: // Security
+        const isPasswordValid = formik.values.password && formik.values.confirmPassword;
+        const isPasswordMatch = formik.values.password === formik.values.confirmPassword;
+        const isPasswordStrong = formik.values.password && 
+          formik.values.password.length >= 8 &&
+          /[A-Z]/.test(formik.values.password) &&
+          /[a-z]/.test(formik.values.password) &&
+          /[0-9]/.test(formik.values.password);
+        return isPasswordValid && isPasswordMatch && isPasswordStrong;
+      default:
+        return false;
+    }
+  };
+
   if (!selectedType) {
     return (
-      <Container className="signup-container">
-        <Paper elevation={3} className="signup-paper type-selection">
-          <Typography variant="h4" className="signup-title">
+      <div className="signup-container">
+        <Paper elevation={3} className="signup-paper" sx={{ maxWidth: '600px', mx: 'auto' }}>
+          <Typography variant="h4" className="signup-title" sx={{ mb: 4 }}>
             Choose Account Type
           </Typography>
-          <Box className="type-selection-cards">
-            <Card className="type-card" onClick={() => handleTypeSelect('job_seeker')}>
+          <Box sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+            gap: 3,
+            maxWidth: '500px',
+            mx: 'auto'
+          }}>
+            <Card 
+              className="type-card" 
+              onClick={() => handleTypeSelect('job_seeker')}
+              sx={{
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 16px rgba(0,0,0,0.1)',
+                  borderColor: '#0a66c2'
+                }
+              }}
+            >
               <CardActionArea>
-                <CardContent>
-                  <Search className="type-icon" />
-                  <Typography variant="h6">Job Seeker</Typography>
-                  <Typography variant="body2" color="text.secondary">
+                <CardContent sx={{ textAlign: 'center', p: 3 }}>
+                  <Search sx={{ fontSize: 48, color: '#0a66c2', mb: 2 }} />
+                  <Typography variant="h5" sx={{ mb: 1, color: '#0a66c2', fontWeight: 600 }}>
+                    Job Seeker
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
                     Looking for job opportunities? Create an account to start your job search.
                   </Typography>
                 </CardContent>
               </CardActionArea>
             </Card>
 
-            <Card className="type-card" onClick={() => navigate('/hiring-manager/signup')}>
+            <Card 
+              className="type-card" 
+              onClick={() => navigate('/hiring-manager/signup')}
+              sx={{
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 16px rgba(0,0,0,0.1)',
+                  borderColor: '#0a66c2'
+                }
+              }}
+            >
               <CardActionArea>
-                <CardContent>
-                  <BusinessCenter className="type-icon" />
-                  <Typography variant="h6">Hiring Manager</Typography>
-                  <Typography variant="body2" color="text.secondary">
+                <CardContent sx={{ textAlign: 'center', p: 3 }}>
+                  <BusinessCenter sx={{ fontSize: 48, color: '#0a66c2', mb: 2 }} />
+                  <Typography variant="h5" sx={{ mb: 1, color: '#0a66c2', fontWeight: 600 }}>
+                    Hiring Manager
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
                     Need to hire talent? Create an account to post jobs and find candidates.
                   </Typography>
                 </CardContent>
@@ -860,48 +925,108 @@ function Signup() {
           </Box>
         </Paper>
         <ToastContainer />
-      </Container>
+      </div>
     );
   }
 
   return (
-    <Container className="signup-container">
-      <Paper elevation={3} className="signup-paper">
-        <Typography variant="h4" className="signup-title">
-          Create Your Account
+    <div className="signup-container">
+      <Paper elevation={3} className="signup-paper" sx={{ 
+        maxWidth: '800px', 
+        mx: 'auto',
+        p: 4,
+        backgroundColor: 'white',
+        borderRadius: 2
+      }}>
+        <Typography variant="h4" className="signup-title" sx={{ 
+          mb: 4,
+          color: '#0a66c2',
+          fontWeight: 600,
+          textAlign: 'center'
+        }}>
+          Complete Your Profile
         </Typography>
 
-        <Stepper activeStep={activeStep} orientation="vertical" className="signup-stepper">
-          {steps.map((step, index) => {
-            const isStepValid = validateStep(index, formik.values);
-            const isStepError = formik.touched[Object.keys(formik.values)[index]] && 
-                               Boolean(formik.errors[Object.keys(formik.values)[index]]);
+        {loading && (
+          <Box sx={{ width: '100%', mb: 3 }}>
+            <LinearProgress />
+          </Box>
+        )}
 
-            return (
-              <Step key={step.label} completed={isStepValid} error={isStepError}>
+        {formik.errors.submit && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {formik.errors.submit}
+          </Alert>
+        )}
+
+        <Box component="form" onSubmit={formik.handleSubmit} className="signup-form">
+          <Stepper activeStep={activeStep} orientation="vertical" sx={{ mb: 4 }}>
+            {steps.map((step, index) => (
+              <Step 
+                key={step.label} 
+                completed={activeStep > index}
+                error={activeStep === index && Object.keys(formik.errors).length > 0 ? true : undefined}
+              >
                 <StepLabel
                   StepIconComponent={() => (
-                    <Box className={`step-icon ${isStepValid ? 'step-completed' : isStepError ? 'step-error' : ''}`}>
-                      {isStepValid ? <CheckCircle /> : isStepError ? <Error /> : step.icon}
+                    <Box
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: '50%',
+                        backgroundColor: activeStep > index ? '#2e7d32' : activeStep === index ? '#0a66c2' : '#e0e0e0',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'white',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onClick={() => handleStepClick(index)}
+                    >
+                      {activeStep > index ? <CheckCircle /> : step.icon}
                     </Box>
                   )}
-                  onClick={() => handleStepClick(index)}
                 >
-                  {step.label}
-                  {isStepError && (
-                    <Typography variant="caption" color="error" className="step-error-message">
-                      Please complete all required fields
-                    </Typography>
-                  )}
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: activeStep > index ? '#2e7d32' : activeStep === index ? '#0a66c2' : 'text.secondary',
+                      fontWeight: 600,
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    {step.label}
+                  </Typography>
                 </StepLabel>
-                <StepContent>
-                  {step.content}
-                  <Box className="step-actions">
+                <StepContent sx={{ 
+                  borderLeft: '2px solid',
+                  borderColor: activeStep > index ? '#2e7d32' : '#e0e0e0',
+                  pl: 3,
+                  pb: 3
+                }}>
+                  <Box sx={{ 
+                    backgroundColor: 'white',
+                    p: 3,
+                    borderRadius: 1,
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                  }}>
+                    {step.content}
+                  </Box>
+                  <Box className="step-actions" sx={{ mt: 3 }}>
                     <Button
                       disabled={activeStep === 0}
                       onClick={handleBack}
                       variant="outlined"
                       className="back-button"
+                      sx={{
+                        color: '#0a66c2',
+                        borderColor: '#0a66c2',
+                        '&:hover': {
+                          borderColor: '#004182',
+                          backgroundColor: 'rgba(10, 102, 194, 0.04)'
+                        }
+                      }}
                     >
                       Back
                     </Button>
@@ -909,42 +1034,75 @@ function Signup() {
                       variant="contained"
                       onClick={activeStep === steps.length - 1 ? formik.handleSubmit : handleNext}
                       className="next-button"
-                      disabled={!isStepValid}
+                      disabled={!isStepValid(activeStep)}
+                      sx={{
+                        backgroundColor: '#0a66c2',
+                        '&:hover': {
+                          backgroundColor: '#004182'
+                        },
+                        '&:disabled': {
+                          backgroundColor: '#e0e0e0',
+                          color: '#666'
+                        }
+                      }}
                     >
-                      {activeStep === steps.length - 1 ? 'Sign Up' : 'Next'}
+                      {activeStep === steps.length - 1 ? 'Create Account' : 'Next'}
                     </Button>
                   </Box>
                 </StepContent>
               </Step>
-            );
-          })}
-        </Stepper>
+            ))}
+          </Stepper>
 
-        <Snackbar
-          open={snackbar.open}
-          autoHideDuration={6000}
-          onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        >
-          <Alert
-            onClose={handleCloseSnackbar}
-            severity={snackbar.severity}
-            variant="filled"
-            sx={{
-              width: '100%',
-              backgroundColor: snackbar.severity === 'success' ? '#2e7d32' : '#d32f2f',
-              '& .MuiAlert-icon': {
-                color: 'white'
-              }
-            }}
-            icon={snackbar.severity === 'success' ? <CheckCircle /> : undefined}
-          >
-            {snackbar.message}
-          </Alert>
-        </Snackbar>
+          <Divider sx={{ my: 4 }}>
+            <Typography variant="body2" color="text.secondary">
+              OR
+            </Typography>
+          </Divider>
+
+          <Box sx={{ textAlign: 'center' }}>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              Are you a hiring manager?
+            </Typography>
+            <Button
+              component={Link}
+              to="/hiring-manager/signup"
+              variant="outlined"
+              startIcon={<BusinessCenter />}
+              fullWidth
+              disabled={loading}
+              sx={{
+                color: '#0a66c2',
+                borderColor: '#0a66c2',
+                '&:hover': {
+                  borderColor: '#004182',
+                  backgroundColor: 'rgba(10, 102, 194, 0.04)'
+                }
+              }}
+            >
+              Sign up as Hiring Manager
+            </Button>
+          </Box>
+        </Box>
       </Paper>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+
       <ToastContainer />
-    </Container>
+    </div>
   );
 }
 

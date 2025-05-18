@@ -35,9 +35,9 @@
   width: 100%;
   max-width: 800px;
   padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.95) !important;
+  background-color: white;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 1;
 }
@@ -46,12 +46,9 @@
 .signup-title,
 .login-title {
   text-align: center;
-  color: #0a66c2 !important;
-  margin-bottom: 2rem !important;
-  font-weight: 700 !important;
-  font-size: 2.5rem !important;
-  letter-spacing: -0.5px;
-  text-shadow: none;
+  color: #0a66c2;
+  margin-bottom: 2rem;
+  font-weight: 600;
 }
 
 .signup-form,
@@ -62,7 +59,28 @@
 }
 
 .form-field {
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
+}
+
+.form-field .MuiInputBase-root {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.form-field .MuiInputBase-input {
+  padding: 12px;
+}
+
+.form-field .MuiInputLabel-root {
+  color: #666;
+}
+
+.form-field .MuiInputLabel-root.Mui-focused {
+  color: #0a66c2;
+}
+
+.form-field .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #0a66c2;
 }
 
 .form-actions {
@@ -90,175 +108,22 @@
 }
 
 .type-card {
-  background-color: #ffffff !important;
-  border: 2px solid #0a66c2 !important;
-  height: 100%;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.type-card:hover {
-  border-color: #0a66c2;
-}
-
-.error-message {
-  color: #d32f2f !important;
-  text-align: center;
-  margin-bottom: 1rem;
-  font-size: 1.1rem !important;
-  font-weight: 500 !important;
-}
-
-/* Password strength indicator */
-.password-strength {
-  margin-top: 0.5rem;
-}
-
-.strength-bar {
-  height: 4px;
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-.strength-text {
-  color: #000000 !important;
-  font-size: 0.9rem !important;
-  font-weight: 500 !important;
-}
-
-/* Country code selector */
-.country-code-select {
-  min-width: 200px;
-}
-
-.country-search {
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .signup-paper,
-  .login-paper {
-    padding: 1rem;
-  }
-
-  .signup-title,
-  .login-title {
-    font-size: 2rem !important;
-  }
-
-  .type-card {
-    margin-bottom: 1rem;
-  }
-
-  .navbar a {
-    font-size: 1rem !important;
-    padding: 0.5rem !important;
-  }
-
-  .navbar .logo {
-    font-size: 1.3rem !important;
-  }
-}
-
-/* Toast notifications */
-.Toastify__toast {
-  border-radius: 4px;
-  font-family: inherit;
-}
-
-.Toastify__toast--success {
-  background-color: #4caf50;
-}
-
-.Toastify__toast--error {
-  background-color: #f44336;
-}
-
-/* Loading indicator */
-.loading-indicator {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
-/* Form sections */
-.form-section {
-  margin-bottom: 2rem;
-}
-
-.form-section-title {
-  color: #0a66c2;
-  margin-bottom: 1rem !important;
-  font-weight: 500 !important;
-}
-
-/* Address fields */
-.address-fields {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-/* Password visibility toggle */
-.password-toggle {
+  transition: all 0.2s ease;
   cursor: pointer;
 }
 
-/* Back button */
-.back-button {
-  margin-right: 1rem;
-}
-
-/* Divider */
-.divider {
-  margin: 2rem 0;
-  display: flex;
-  align-items: center;
-  text-align: center;
-}
-
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.divider-text {
-  padding: 0 1rem;
-  color: #757575;
-}
-
-/* Hiring manager section */
-.hiring-manager-section {
-  text-align: center;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid #e0e0e0;
-}
-
-.hiring-manager-button {
-  margin-top: 1rem;
-}
-
-.type-selection-cards {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.type-card .MuiCardContent-root {
-  padding: 2rem;
-  text-align: center;
+.type-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-color: #0a66c2;
 }
 
 .type-icon {
-  font-size: 3.5rem !important;
+  font-size: 2.5rem;
   color: #0a66c2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .type-card h6 {
@@ -515,39 +380,40 @@ html {
 }
 
 .step-actions {
-  margin-top: 2rem;
   display: flex;
   justify-content: space-between;
+  margin-top: 1.5rem;
   gap: 1rem;
 }
 
-.next-button {
-  background-color: #0a66c2 !important;
-  color: #ffffff !important;
-  padding: 0.75rem 2rem !important;
-  font-size: 1rem !important;
-  text-transform: none !important;
-  border-radius: 4px !important;
-  transition: background-color 0.2s !important;
-  font-weight: 600 !important;
-}
-
-.next-button:hover {
-  background-color: #004182 !important;
-}
-
 .back-button {
-  border-color: #0a66c2 !important;
-  color: #0a66c2 !important;
-  padding: 0.75rem 2rem !important;
-  font-size: 1rem !important;
-  text-transform: none !important;
-  border-radius: 4px !important;
-  font-weight: 600 !important;
+  color: #0a66c2;
+  border-color: #0a66c2;
+  text-transform: none;
+  font-weight: 600;
+  padding: 8px 24px;
 }
 
 .back-button:hover {
-  background-color: rgba(10, 102, 194, 0.04) !important;
+  border-color: #004182;
+  background-color: rgba(10, 102, 194, 0.04);
+}
+
+.next-button {
+  background-color: #0a66c2;
+  color: white;
+  text-transform: none;
+  font-weight: 600;
+  padding: 8px 24px;
+}
+
+.next-button:hover {
+  background-color: #004182;
+}
+
+.next-button:disabled {
+  background-color: #e0e0e0;
+  color: #666;
 }
 
 .MuiStepConnector-line {
@@ -583,8 +449,8 @@ html {
     flex-direction: column;
   }
 
-  .next-button,
-  .back-button {
+  .back-button,
+  .next-button {
     width: 100%;
   }
 }
@@ -846,4 +712,34 @@ html {
 
 .MuiInputLabel-root.Mui-focused {
   color: #0a66c2 !important;
+}
+
+.type-selection-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 600px) {
+  .signup-container {
+    padding: 1rem;
+  }
+
+  .signup-paper {
+    padding: 1.5rem;
+  }
+
+  .type-selection-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .step-actions {
+    flex-direction: column;
+  }
+
+  .back-button,
+  .next-button {
+    width: 100%;
+  }
 } 

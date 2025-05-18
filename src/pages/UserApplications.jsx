@@ -256,7 +256,7 @@ const UserApplications = () => {
                       <Box className="company-info">
                         <BusinessIcon className="info-icon" />
                         <Typography variant="h6">
-                          {application.job.company}
+                          {application.job?.company || 'Company not specified'}
                         </Typography>
                       </Box>
                     </Box>
@@ -292,10 +292,10 @@ const UserApplications = () => {
             <DialogContent dividers>
               <Box mb={3}>
                 <Typography variant="h5" gutterBottom>
-                  {selectedApplication.job.title}
+                  {selectedApplication.job?.title || 'Job title not specified'}
                 </Typography>
                 <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-                  {selectedApplication.job.company}
+                  {selectedApplication.job?.company || 'Company not specified'}
                 </Typography>
                 <Chip
                   label={selectedApplication.status}
@@ -314,7 +314,7 @@ const UserApplications = () => {
                     Location
                   </Typography>
                   <Typography variant="body1" gutterBottom>
-                    {selectedApplication.job.location}
+                    {selectedApplication.job?.location || 'Location not specified'}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -322,7 +322,7 @@ const UserApplications = () => {
                     Experience Required
                   </Typography>
                   <Typography variant="body1" gutterBottom>
-                    {formatExperience(selectedApplication.job.experience)}
+                    {selectedApplication.job?.experience ? formatExperience(selectedApplication.job.experience) : 'Experience not specified'}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -330,10 +330,10 @@ const UserApplications = () => {
                     Education Required
                   </Typography>
                   <Typography variant="body1" gutterBottom>
-                    {formatEducation(selectedApplication.job.education)}
+                    {selectedApplication.job?.education ? formatEducation(selectedApplication.job.education) : 'Education not specified'}
                   </Typography>
                 </Grid>
-                {selectedApplication.job.salary && (
+                {selectedApplication.job?.salary && (
                   <Grid item xs={12} sm={6}>
                     <Typography variant="subtitle2" color="textSecondary">
                       Salary
@@ -349,9 +349,9 @@ const UserApplications = () => {
                 Job Description
               </Typography>
               <Typography variant="body1" paragraph>
-                {selectedApplication.job.description}
+                {selectedApplication.job?.description || 'No description available'}
               </Typography>
-              {selectedApplication.job.requirements && (
+              {selectedApplication.job?.requirements && (
                 <>
                   <Typography variant="h6" gutterBottom>
                     Requirements

@@ -110,7 +110,7 @@ function App() {
                 {/* Public Job Showroom */}
                 <Route
                   path="/job-showroom"
-                  element={
+                  element={ 
                     <ProtectedRoute>
                       <JobShowroom />
                     </ProtectedRoute>
