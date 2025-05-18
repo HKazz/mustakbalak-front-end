@@ -1,0 +1,595 @@
+/* Global styles to ensure our styles take precedence */
+.MuiContainer-root.manage-jobs-container,
+.MuiBox-root.page-header,
+.MuiTypography-root.page-title,
+.MuiButton-root.create-job-button,
+.MuiCard-root.job-card,
+.MuiCardContent-root.job-card-content,
+.MuiBox-root.job-header,
+.MuiTypography-root.job-title,
+.MuiBox-root.job-info,
+.MuiSvgIcon-root.job-info-icon,
+.MuiBox-root.job-tags,
+.MuiChip-root.job-tag,
+.MuiTypography-root.job-description,
+.MuiCardActions-root.job-actions,
+.MuiButton-root.action-button,
+.MuiButton-root.edit-button,
+.MuiButton-root.delete-button,
+.MuiPaper-root.empty-state,
+.MuiSvgIcon-root.empty-state-icon,
+.MuiTypography-root.empty-state-title,
+.MuiTypography-root.empty-state-description,
+.MuiDialog-root.delete-dialog,
+.MuiDialogTitle-root.delete-dialog-title,
+.MuiDialogContent-root.delete-dialog-content,
+.MuiDialogActions-root.delete-dialog-actions,
+.MuiBox-root.loading-container,
+.MuiAlert-root.error-alert {
+  all: revert;
+}
+
+/* Container and Layout */
+.manage-jobs-container {
+  padding: 2rem !important;
+  max-width: 800px !important;
+  margin: 0 auto !important;
+  background-color: #ffffff !important;
+  border: 2px solid #e0e0e0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.page-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  margin-bottom: 2rem !important;
+  padding: 1.5rem 0 !important;
+  border-bottom: 4px solid #0a66c2 !important;
+  gap: 1.5rem !important;
+}
+
+.page-title {
+  font-size: 2.25rem !important;
+  font-weight: 800 !important;
+  color: #1a1a1a !important;
+  letter-spacing: -0.75px !important;
+  padding-bottom: 0.75rem !important;
+  text-transform: uppercase !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+.create-job-button {
+  background-color: #0a66c2 !important;
+  color: white !important;
+  padding: 1rem 2rem !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  font-size: 1.125rem !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3) !important;
+  border: 2px solid #0a66c2 !important;
+  letter-spacing: 0.5px !important;
+  margin-top: 0.5rem !important;
+}
+
+.create-job-button:hover {
+  background-color: #004182 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(10, 102, 194, 0.4) !important;
+  border-color: #004182 !important;
+}
+
+.create-job-button .MuiButton-startIcon {
+  margin-right: 0.75rem !important;
+}
+
+.create-job-button .MuiSvgIcon-root {
+  font-size: 1.5rem !important;
+}
+
+/* Job Card Styles - Simplified */
+.job-card {
+  display: flex !important;
+  align-items: center !important;
+  padding: 1rem !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+  background-color: #ffffff !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.job-card:hover {
+  background-color: #f8f9fa !important;
+}
+
+.job-card-content {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  padding: 0 !important;
+}
+
+.job-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  flex: 1 !important;
+}
+
+.job-title {
+  font-size: 1.125rem !important;
+  font-weight: 500 !important;
+  color: #1a1a1a !important;
+  margin: 0 !important;
+}
+
+.job-info-icon {
+  color: #0a66c2 !important;
+  font-size: 1.25rem !important;
+  transition: transform 0.2s ease !important;
+}
+
+.job-card:hover .job-info-icon {
+  transform: translateX(4px) !important;
+}
+
+/* Modal Styles */
+.job-details-modal {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: white !important;
+  padding: 2rem !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  max-width: 800px !important;
+  width: 90% !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  z-index: 1000 !important;
+}
+
+.modal-backdrop {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+  z-index: 999 !important;
+}
+
+.modal-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 1.5rem !important;
+  padding-bottom: 1rem !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+}
+
+.modal-title {
+  font-size: 1.75rem !important;
+  font-weight: 600 !important;
+  color: #1a1a1a !important;
+  margin: 0 !important;
+}
+
+.modal-close-button {
+  padding: 0.5rem !important;
+  color: #666 !important;
+  transition: color 0.2s ease !important;
+}
+
+.modal-close-button:hover {
+  color: #1a1a1a !important;
+}
+
+/* Job Details in Modal */
+.job-details-container {
+  margin-top: 1rem !important;
+}
+
+.job-details-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  gap: 1.5rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.job-details-item {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.75rem !important;
+}
+
+.job-details-icon {
+  color: #0a66c2 !important;
+  font-size: 1.5rem !important;
+}
+
+.job-details-title {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  color: #1a1a1a !important;
+  margin-bottom: 1rem !important;
+  padding-bottom: 0.5rem !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+}
+
+.job-description {
+  margin: 1.5rem 0 !important;
+  padding: 1.5rem !important;
+  background-color: #f8f9fa !important;
+  border-radius: 8px !important;
+  border: 1px solid #e0e0e0 !important;
+  font-size: 1.125rem !important;
+  line-height: 1.6 !important;
+}
+
+.job-details-item .MuiTypography-subtitle2 {
+  font-size: 1rem !important;
+  color: #666 !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.job-details-item .MuiTypography-body1 {
+  font-size: 1.125rem !important;
+  color: #1a1a1a !important;
+  font-weight: 500 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .manage-jobs-container {
+    padding: 1rem !important;
+  }
+
+  .job-card {
+    padding: 0.875rem !important;
+  }
+
+  .job-title {
+    font-size: 1rem !important;
+  }
+
+  .job-details-modal {
+    width: 95% !important;
+    padding: 1.5rem !important;
+  }
+
+  .modal-title {
+    font-size: 1.25rem !important;
+  }
+
+  .job-details-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+}
+
+/* Job Card Styles */
+.job-card:last-child {
+  border-bottom: none !important;
+}
+
+.job-card.selected {
+  background-color: #e3f2fd !important;
+  border-left: 4px solid #0a66c2 !important;
+  padding-left: calc(1rem - 4px) !important;
+}
+
+.job-info {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1.5rem !important;
+  flex: 1 !important;
+}
+
+.job-info-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  color: #4a4a4a !important;
+  font-size: 0.9375rem !important;
+}
+
+.job-tags {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  width: 200px !important;
+}
+
+.job-tag {
+  background-color: #e3f2fd !important;
+  color: #0a66c2 !important;
+  font-size: 0.875rem !important;
+  padding: 0.25rem 0.75rem !important;
+  border-radius: 4px !important;
+  border: 1px solid rgba(10, 102, 194, 0.1) !important;
+}
+
+.job-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  width: 150px !important;
+  justify-content: flex-end !important;
+  padding-left: 1rem !important;
+  border-left: 1px solid #e0e0e0 !important;
+}
+
+.action-button {
+  text-transform: none !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 4px !important;
+  min-width: 80px !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+.edit-button {
+  color: #ffffff !important;
+  background-color: #0a66c2 !important;
+  border: 1px solid #0a66c2 !important;
+}
+
+.edit-button:hover {
+  background-color: #004182 !important;
+  border-color: #004182 !important;
+}
+
+.delete-button {
+  color: #ffffff !important;
+  background-color: #d32f2f !important;
+  border: 1px solid #d32f2f !important;
+}
+
+.delete-button:hover {
+  background-color: #b71c1c !important;
+  border-color: #b71c1c !important;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center !important;
+  padding: 5rem 2rem !important;
+  background-color: #fafafa !important;
+  border-radius: 16px !important;
+  margin-top: 2rem !important;
+  border: 2px dashed #e0e0e0 !important;
+}
+
+.empty-state-icon {
+  font-size: 2.5rem !important;
+  color: #0a66c2 !important;
+  margin-bottom: 1rem !important;
+  opacity: 0.8 !important;
+}
+
+.empty-state-title {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  color: #1a1a1a !important;
+  margin-bottom: 1rem !important;
+  letter-spacing: -0.5px !important;
+}
+
+.empty-state-description {
+  color: #666 !important;
+  font-size: 1.125rem !important;
+  margin-bottom: 2.5rem !important;
+  max-width: 500px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Loading and Error States */
+.loading-container {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 60vh !important;
+}
+
+.alert-container {
+  margin-top: 2rem !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .manage-jobs-container {
+    border-radius: 4px !important;
+  }
+
+  .job-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 1rem !important;
+  }
+
+  .job-card.selected {
+    border-left: none !important;
+    border-bottom: 4px solid #0a66c2 !important;
+    padding-left: 1rem !important;
+  }
+
+  .job-card-content {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .job-header {
+    width: 100% !important;
+  }
+
+  .job-info {
+    width: 100% !important;
+    flex-wrap: wrap !important;
+  }
+
+  .job-tags {
+    width: 100% !important;
+  }
+
+  .job-actions {
+    width: 100% !important;
+    justify-content: flex-end !important;
+    padding-left: 0 !important;
+    border-left: none !important;
+    border-top: 1px solid #e0e0e0 !important;
+    padding-top: 1rem !important;
+    margin-top: 0.5rem !important;
+  }
+
+  .action-button {
+    flex: 1 !important;
+    max-width: 120px !important;
+  }
+
+  .empty-state {
+    padding: 3rem 1.5rem !important;
+  }
+
+  .empty-state-icon {
+    font-size: 4rem !important;
+  }
+
+  .empty-state-title {
+    font-size: 1.5rem !important;
+  }
+
+  .empty-state-description {
+    font-size: 1rem !important;
+  }
+}
+
+/* Add styles for the expanded content */
+.job-card .MuiCollapse-root {
+  margin-top: 1rem !important;
+  border-top: 1px solid #e0e0e0 !important;
+  padding-top: 1rem !important;
+}
+
+.job-card .MuiCollapse-root .job-info {
+  margin-bottom: 0.75rem !important;
+}
+
+.job-card .MuiCollapse-root .job-description {
+  margin: 1.5rem 0 !important;
+  padding: 1.25rem !important;
+  background-color: #f8f9fa !important;
+  border-radius: 8px !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+.job-card .MuiCollapse-root .job-tags {
+  margin: 1.5rem 0 !important;
+}
+
+.job-card .MuiCollapse-root .job-actions {
+  margin-top: 1.5rem !important;
+  padding-top: 1.5rem !important;
+  border-top: 1px solid #e0e0e0 !important;
+}
+
+/* Job Details Container */
+.job-details-card,
+.job-description-card,
+.job-sidebar-card {
+  background-color: #ffffff !important;
+  border-radius: 3px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  margin-bottom: 0.375rem !important;
+  border: 1px solid #e0e0e0 !important;
+  padding: 0.5rem !important;
+}
+
+.job-details-title {
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  color: #1a1a1a !important;
+  margin-bottom: 0.375rem !important;
+  padding-bottom: 0.25rem !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+}
+
+.job-description-card {
+  margin-top: 0.5rem !important;
+}
+
+.job-description {
+  color: #4a4a4a !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.3 !important;
+  white-space: pre-wrap !important;
+  padding: 0.5rem !important;
+  background-color: #f8f9fa !important;
+  border-radius: 4px !important;
+}
+
+.job-sidebar-card .job-tags {
+  margin-bottom: 0.75rem !important;
+  gap: 0.25rem !important;
+}
+
+.job-tag {
+  background-color: #e3f2fd !important;
+  color: #0a66c2 !important;
+  font-size: 0.6875rem !important;
+  font-weight: 500 !important;
+  padding: 0.125rem 0.5rem !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(10, 102, 194, 0.1) !important;
+}
+
+.job-sidebar-card .job-actions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.375rem !important;
+  margin-top: 0.5rem !important;
+  padding-top: 0.5rem !important;
+  border-top: 1px solid #e0e0e0 !important;
+}
+
+.job-sidebar-card .action-button {
+  padding: 0.25rem !important;
+  font-size: 0.8125rem !important;
+  text-transform: none !important;
+  border-radius: 4px !important;
+  min-height: 28px !important;
+}
+
+/* For Material-UI icons in buttons */
+.MuiButton-startIcon {
+  margin-right: 0.25rem !important;
+}
+
+.MuiButton-startIcon .MuiSvgIcon-root {
+  font-size: 0.875rem !important;
+}
+
+/* For expand/collapse icon */
+.MuiIconButton-root {
+  padding: 0.25rem !important;
+}
+
+.MuiIconButton-root .MuiSvgIcon-root {
+  font-size: 0.875rem !important;
+}
+
+/* For dialog icons */
+.MuiDialogTitle-root .MuiSvgIcon-root {
+  font-size: 1rem !important;
+  margin-right: 0.5rem !important;
+} 

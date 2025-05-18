@@ -1,0 +1,162 @@
+.navbar {
+  background-color: #0a66c2 !important;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
+  transition: transform 0.3s ease;
+}
+
+.navbar.hidden {
+  transform: translateY(-100%);
+}
+
+.navbar-container {
+  padding: 0 16px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff !important;
+}
+
+.navbar-brand .MuiTypography-root {
+  margin-left: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff !important;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.navbar-welcome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 1rem;
+  margin-right: 12px;
+  background: linear-gradient(135deg, rgba(10, 102, 194, 0.25), rgba(10, 102, 194, 0.15));
+  border-radius: 20px;
+  padding: 6px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-welcome .navbar-welcome-label {
+  color: #e3f2fd;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.navbar-welcome .navbar-username {
+  font-weight: 700;
+  color: #fff;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+  padding: 2px 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-role-chip {
+  background: linear-gradient(135deg, #81d4fa, #4fc3f7) !important;
+  color: #01579b !important;
+  height: 24px !important;
+  margin-left: 4px;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-role-chip .MuiChip-label {
+  padding: 0 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.navbar-icon-button {
+  padding: 4px !important;
+}
+
+.navbar-icon-button:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.navbar-avatar {
+  width: 28px !important;
+  height: 28px !important;
+  font-size: 0.875rem !important;
+}
+
+.navbar-button {
+  font-size: 0.875rem !important;
+  padding: 4px 12px !important;
+  margin-right: 4px !important;
+}
+
+.navbar-button-outlined {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+.navbar-button-outlined:hover {
+  border-color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.navbar-menu {
+  margin-top: 12px !important;
+  min-width: 200px !important;
+}
+
+.navbar-menu-item {
+  padding: 8px 16px !important;
+}
+
+.navbar-menu-header {
+  padding: 8px 16px;
+}
+
+.navbar-menu-header .MuiTypography-subtitle2 {
+  font-weight: 600;
+}
+
+.navbar-menu-header .MuiTypography-body2 {
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.navbar-menu-chip {
+  margin-top: 4px !important;
+  background-color: #e3f2fd !important;
+  color: #0a66c2 !important;
+  height: 20px !important;
+}
+
+.navbar-menu-chip .MuiChip-label {
+  padding: 0 8px;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .navbar-welcome {
+    display: none;
+  }
+  
+  .navbar-right {
+    gap: 2px;
+  }
+} 

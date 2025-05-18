@@ -1,0 +1,500 @@
+.job-showroom-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: calc(100vh - 64px);
+  background-color: #f5f5f5;
+}
+
+.page-title {
+  color: #1a237e;
+  font-weight: 600 !important;
+  margin: 0 !important;
+}
+
+.search-filter-section {
+  margin-bottom: 2rem;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.search-field {
+  margin-bottom: 0;
+}
+
+.search-field .MuiOutlinedInput-root {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.search-field .MuiOutlinedInput-root:hover {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-field .MuiOutlinedInput-root.Mui-focused {
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-field .MuiInputLabel-root {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.search-field .MuiInputAdornment-root .MuiSvgIcon-root {
+  color: #0a66c2;
+  font-size: 1.4rem;
+}
+
+.search-button {
+  height: 56px;
+  font-size: 1rem;
+  text-transform: none;
+  font-weight: 500;
+  background-color: #0a66c2;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(10, 102, 194, 0.2);
+  transition: all 0.2s ease;
+}
+
+.search-button:hover {
+  background-color: #004182;
+  box-shadow: 0 4px 8px rgba(10, 102, 194, 0.3);
+  transform: translateY(-1px);
+}
+
+.filters-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-icon {
+  color: #1a237e;
+  margin-right: 8px;
+}
+
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.filters-header h6 {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.advanced-filter-button {
+  color: #0a66c2;
+  text-transform: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+}
+
+.advanced-filter-button:hover {
+  background-color: rgba(10, 102, 194, 0.08);
+}
+
+.basic-filters {
+  margin-bottom: 1rem;
+}
+
+.advanced-filters {
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.filter-field {
+  margin-bottom: 1rem;
+}
+
+.filter-field .MuiInputLabel-root {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.filter-field .MuiOutlinedInput-root {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.filter-field .MuiOutlinedInput-root:hover {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-field .MuiOutlinedInput-root.Mui-focused {
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-field .MuiInputAdornment-root .MuiSvgIcon-root {
+  color: #0a66c2;
+  font-size: 1.2rem;
+}
+
+.filter-field .MuiSelect-select {
+  padding-left: 40px;
+}
+
+.filter-field .MuiSelect-icon {
+  color: #0a66c2;
+}
+
+.jobs-grid {
+  margin-top: 2rem;
+}
+
+.job-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+}
+
+.job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #1a237e;
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.job-info {
+  flex: 1;
+}
+
+.job-info h6 {
+  color: #1a237e;
+  font-weight: 600 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.company-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-icon {
+  color: #1a237e;
+  font-size: 1.2rem !important;
+}
+
+.job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+}
+
+.meta-icon {
+  color: #1a237e;
+  font-size: 1.1rem !important;
+}
+
+.job-type-chip {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 500;
+  text-transform: capitalize;
+  min-width: 100px;
+  text-align: center;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.job-description {
+  color: #666;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.apply-button {
+  background-color: #0a66c2;
+  color: white;
+  text-transform: none;
+  font-weight: 500;
+  padding: 0.5rem;
+}
+
+.apply-button:hover {
+  background-color: #004182;
+}
+
+/* Dialog Styles */
+.job-dialog .MuiDialog-paper {
+  border-radius: 10px;
+}
+
+.dialog-title {
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-button {
+  color: #666;
+}
+
+.dialog-content {
+  padding: 1.5rem;
+}
+
+.job-info-section {
+  margin-bottom: 2rem;
+}
+
+.job-description-section,
+.job-requirements-section {
+  margin-bottom: 2rem;
+}
+
+.description-text,
+.requirements-text {
+  color: #444;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.dialog-actions {
+  padding: 1rem 1.5rem;
+  background-color: #f8f9fa;
+}
+
+.close-dialog-button {
+  color: #666;
+  border-color: #666;
+}
+
+.apply-dialog-button {
+  background-color: #0a66c2;
+  color: white;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.apply-dialog-button:hover {
+  background-color: #004182;
+}
+
+/* Loading and Error States */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.alert-container {
+  margin-top: 2rem;
+}
+
+.no-jobs {
+  text-align: center;
+  color: #666;
+  padding: 3rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .job-showroom-container {
+    padding: 1rem;
+  }
+
+  .filters-section {
+    flex-direction: column;
+  }
+
+  .job-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .job-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.reset-button {
+  text-transform: none;
+  font-weight: 500;
+  padding: 0.5rem 1.5rem;
+  border-color: #0a66c2;
+  color: #0a66c2;
+}
+
+.reset-button:hover {
+  background-color: rgba(10, 102, 194, 0.08);
+  border-color: #004182;
+  color: #004182;
+}
+
+.apply-button {
+  text-transform: none;
+  font-weight: 500;
+  padding: 0.5rem 1.5rem;
+  background-color: #0a66c2;
+  box-shadow: 0 2px 4px rgba(10, 102, 194, 0.2);
+  transition: all 0.2s ease;
+}
+
+.apply-button:hover {
+  background-color: #004182;
+  box-shadow: 0 4px 8px rgba(10, 102, 194, 0.3);
+  transform: translateY(-1px);
+}
+
+.job-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.skill-chip {
+  background-color: #e3f2fd;
+  color: #0a66c2;
+  font-size: 0.75rem;
+}
+
+.requirements-list,
+.responsibilities-list,
+.benefits-list {
+  padding-left: 1.5rem;
+  margin: 0;
+}
+
+.requirements-list li,
+.responsibilities-list li,
+.benefits-list li {
+  margin-bottom: 0.5rem;
+  color: #444;
+  line-height: 1.5;
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.job-skills-section,
+.job-benefits-section {
+  margin-top: 2rem;
+}
+
+.job-responsibilities-section {
+  margin-top: 2rem;
+}
+
+.apply-button.applied,
+.apply-dialog-button.applied {
+  background-color: #4caf50;
+  color: white;
+}
+
+.apply-button.applied:hover,
+.apply-dialog-button.applied:hover {
+  background-color: #388e3c;
+}
+
+.view-applications-button {
+  background-color: #0a66c2;
+  color: white;
+  text-transform: none;
+  font-weight: 500;
+  padding: 0.5rem 1.5rem;
+  box-shadow: 0 2px 4px rgba(10, 102, 194, 0.2);
+  transition: all 0.2s ease;
+}
+
+.view-applications-button:hover {
+  background-color: #004182;
+  box-shadow: 0 4px 8px rgba(10, 102, 194, 0.3);
+  transform: translateY(-1px);
+}
+
+.apply-button.requested {
+  background-color: #ff9800 !important;
+  color: white !important;
+  cursor: default !important;
+}
+
+.apply-button.requested:hover {
+  background-color: #ff9800 !important;
+}
+
+.apply-button:disabled {
+  background-color: #e0e0e0 !important;
+  color: #9e9e9e !important;
+  cursor: not-allowed !important;
+}
+
+.apply-dialog-button.requested {
+  background-color: #ff9800 !important;
+  color: white !important;
+  cursor: default !important;
+}
+
+.apply-dialog-button.requested:hover {
+  background-color: #ff9800 !important;
+}
+
+.apply-dialog-button:disabled {
+  background-color: #e0e0e0 !important;
+  color: #9e9e9e !important;
+  cursor: not-allowed !important;
+} 
