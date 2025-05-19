@@ -165,9 +165,15 @@ function Login() {
     let errorMessage = "An unexpected error occurred. Please try again.";
     
     if (err.response) {
-      errorMessage = err.response.data.error || 
-                    err.response.data.message || 
-                    `Server error (${err.response.status}): ${err.response.statusText}`;
+      if (err.response.status === 401) {
+        errorMessage = "Invalid username or password. Please try again.";
+      } else if (err.response.status === 404) {
+        errorMessage = "Account not found. Please sign up first.";
+      } else {
+        errorMessage = err.response.data.error || 
+                      err.response.data.message || 
+                      `Server error (${err.response.status}): ${err.response.statusText}`;
+      }
     } else if (err.request) {
       errorMessage = "Unable to connect to the server. Please check your internet connection and try again.";
     } else {
