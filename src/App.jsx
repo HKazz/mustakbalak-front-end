@@ -21,6 +21,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoginOptions from './pages/LoginOptions';
 import SignupOptions from './pages/SignupOptions';
 import HiringManagerApplications from './pages/HiringManagerApplications';
+import EmailVerification from './pages/EmailVerification';
 import './App.css';
 
 const theme = createTheme({
@@ -57,6 +58,7 @@ function App() {
                 <Route path="/signup-options" element={<SignupOptions />} />
                 <Route path="/hiring-manager/login" element={<HiringManagerLogin />} />
                 <Route path="/hiring-manager/signup" element={<HiringManagerSignup />} />
+                <Route path="/verify-email" element={<EmailVerification />} />
                 
                 {/* Protected Routes - Only for authenticated users */}
                 <Route path="/profile" element={

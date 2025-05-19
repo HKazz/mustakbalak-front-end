@@ -22,6 +22,7 @@ import {
   Visibility,
   VisibilityOff,
   Business as BusinessIcon,
+  Email as EmailIcon,
 } from '@mui/icons-material';
 import '../style/SignupPage.css';
 
@@ -89,13 +90,23 @@ function Login() {
     setError("");
 
     try {
-      console.log("Attempting login for username:", formData.username);
-      console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
+      await handleLogin();
+    } catch (err) {
+      handleError(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-      // Attempt to login with provided credentials
+  async function handleLogin() {
+    try {
+      console.log('Backend URL:', import.meta.env.VITE_BACKEND_URL);
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
-        formData,
+        {
+          username: formData.username,
+          password: formData.password
+        },
         {
           headers: {
             'Content-Type': 'application/json'
@@ -103,22 +114,26 @@ function Login() {
         }
       );
 
-      console.log("Login response:", response.data);
-      console.log("Response message:", response.data.message);
-      console.log("Response success:", response.data.success);
-
       if (response.data.message === 'Login successful') {
-        // Use the login function from AuthContext
+        if (response.data.isFirstLogin) {
+          // Redirect to email verification page
+          navigate('/verify-email', {
+            state: {
+              email: response.data.user.email,
+              username: formData.username
+            }
+          });
+          return;
+        }
+
         await login(response.data.token, response.data.user);
         
-        // Show success message
         setSnackbar({
           open: true,
           message: "Login successful!",
           severity: "success"
         });
 
-        // Check if user needs to complete profile
         if (response.data.user.userType === 'job_seeker' && 
             (!response.data.user.certificate || !response.data.user.experience)) {
           navigate("/complete-profile", { replace: true });
@@ -127,7 +142,6 @@ function Login() {
         }
       } else {
         const errorMsg = response.data.error || "Login failed";
-        console.error("Login failed:", errorMsg);
         setError(errorMsg);
         setSnackbar({
           open: true,
@@ -135,46 +149,37 @@ function Login() {
           severity: "error"
         });
       }
-    } catch (err) {
-      console.error("Login error details:", {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-        config: {
-          url: err.config?.url,
-          method: err.config?.method,
-          headers: err.config?.headers
-        }
-      });
-
-      let errorMessage = "An unexpected error occurred. Please try again.";
-      
-      if (err.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error("Server error response:", err.response.data);
-        errorMessage = err.response.data.error || 
-                      err.response.data.message || 
-                      `Server error (${err.response.status}): ${err.response.statusText}`;
-      } else if (err.request) {
-        // The request was made but no response was received
-        console.error("No response received:", err.request);
-        errorMessage = "Unable to connect to the server. Please check your internet connection and try again.";
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error("Request setup error:", err.message);
-        errorMessage = `Request error: ${err.message}`;
-      }
-      
-      setError(errorMessage);
-      setSnackbar({
-        open: true,
-        message: errorMessage,
-        severity: "error"
-      });
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error('Login error:', error);
+      handleError(error);
     }
+  }
+
+  function handleError(err) {
+    console.error("Login error details:", {
+      message: err.message,
+      response: err.response?.data,
+      status: err.response?.status
+    });
+
+    let errorMessage = "An unexpected error occurred. Please try again.";
+    
+    if (err.response) {
+      errorMessage = err.response.data.error || 
+                    err.response.data.message || 
+                    `Server error (${err.response.status}): ${err.response.statusText}`;
+    } else if (err.request) {
+      errorMessage = "Unable to connect to the server. Please check your internet connection and try again.";
+    } else {
+      errorMessage = `Request error: ${err.message}`;
+    }
+    
+    setError(errorMessage);
+    setSnackbar({
+      open: true,
+      message: errorMessage,
+      severity: "error"
+    });
   }
 
   return (
@@ -244,7 +249,6 @@ function Login() {
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}
                     edge="end"
-                    disabled={loading}
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
@@ -254,40 +258,25 @@ function Login() {
           />
 
           {/* Submit Button */}
-          <Box className="form-actions">
-            <Button
-              type="submit"
-              variant="contained"
-              className="signup-button"
-              fullWidth
-              disabled={loading}
-            >
-              {loading ? "Signing in..." : "Sign In"}
-            </Button>
-          </Box>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            disabled={loading}
+            className="submit-button"
+          >
+            Sign In
+          </Button>
 
-          {/* Divider */}
-          <Divider sx={{ my: 2 }}>
-            <Typography variant="body2" color="text.secondary">
-              OR
+          {/* Sign Up Link */}
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <Typography variant="body2">
+              Don't have an account?{' '}
+              <Link to="/signup" style={{ textDecoration: 'none' }}>
+                Sign Up
+              </Link>
             </Typography>
-          </Divider>
-
-          {/* Hiring Manager Login Link */}
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              Are you a hiring manager?
-            </Typography>
-            <Button
-              component={Link}
-              to="/hiring-manager/login"
-              variant="outlined"
-              startIcon={<BusinessIcon />}
-              fullWidth
-              disabled={loading}
-            >
-              Sign in as Hiring Manager
-            </Button>
           </Box>
         </Box>
       </Paper>
@@ -297,19 +286,12 @@ function Login() {
         open={snackbar.open}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert
           onClose={handleCloseSnackbar}
           severity={snackbar.severity}
-          variant="filled"
-          sx={{
-            width: "100%",
-            backgroundColor: snackbar.severity === "success" ? "#2e7d32" : "#d32f2f",
-            "& .MuiAlert-icon": {
-              color: "white",
-            },
-          }}
+          sx={{ width: '100%' }}
         >
           {snackbar.message}
         </Alert>
