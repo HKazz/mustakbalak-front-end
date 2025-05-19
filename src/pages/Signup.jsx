@@ -965,7 +965,7 @@ function Signup() {
               <Step 
                 key={step.label} 
                 completed={activeStep > index}
-                error={activeStep === index && Object.keys(formik.errors).length > 0 ? true : undefined}
+                error={activeStep === index && Object.keys(formik.errors).length > 0 ? "error" : undefined}
               >
                 <StepLabel
                   StepIconComponent={() => (
