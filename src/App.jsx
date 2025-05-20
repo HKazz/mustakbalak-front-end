@@ -1,8 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { UserProvider } from './context/AuthContext';
+import { LoadingProvider } from './context/LoadingContext';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Navbar from './components/Navbar';
+import LoadingSpinner from './components/LoadingSpinner';
 import ErrorBoundary from './components/ErrorBoundary';
+import usePageTransition from './hooks/usePageTransition';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import HiringManagerLogin from './pages/HiringManagerLogin';
@@ -22,6 +25,7 @@ import LoginOptions from './pages/LoginOptions';
 import SignupOptions from './pages/SignupOptions';
 import HiringManagerApplications from './pages/HiringManagerApplications';
 import EmailVerification from './pages/EmailVerification';
+import FAQ from './pages/FAQ';
 import './App.css';
 
 const theme = createTheme({
@@ -41,118 +45,130 @@ const theme = createTheme({
   },
 });
 
+function AppContent() {
+  usePageTransition();
+
+  return (
+    <div className="app-container">
+      <Navbar />
+      <LoadingSpinner />
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/login-options" element={<LoginOptions />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup-options" element={<SignupOptions />} />
+          <Route path="/hiring-manager/login" element={<HiringManagerLogin />} />
+          <Route path="/hiring-manager/signup" element={<HiringManagerSignup />} />
+          <Route path="/verify-email" element={<EmailVerification />} />
+          <Route path="/faq" element={<FAQ />} />
+          
+          {/* Protected Routes - Only for authenticated users */}
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
+          <Route path="/complete-profile" element={
+            <ProtectedRoute>
+              <CompleteProfile />
+            </ProtectedRoute>
+          } />
+          <Route path="/job-seeker/profile" element={
+            <ProtectedRoute requiredUserType="job_seeker">
+              <Profile />
+            </ProtectedRoute>
+          } />
+          <Route path="/job-seeker/complete-profile" element={
+            <ProtectedRoute requiredUserType="job_seeker">
+              <CompleteProfile />
+            </ProtectedRoute>
+          } />
+          <Route path="/hiring-manager/profile" element={
+            <ProtectedRoute requiredUserType="hiring_manager">
+              <HiringManagerProfile />
+            </ProtectedRoute>
+          } />
+          <Route path="/hiring-manager/complete-profile" element={
+            <ProtectedRoute requiredUserType="hiring_manager">
+              <HiringManagerCompleteProfile />
+            </ProtectedRoute>
+          } />
+
+          {/* Job Management Routes - Only for hiring managers */}
+          <Route path="/hiring-manager/jobs" element={
+            <ProtectedRoute requiredUserType="hiring_manager">
+              <JobsList />
+            </ProtectedRoute>
+          } />
+          <Route path="/hiring-manager/jobs/create" element={
+            <ProtectedRoute requiredUserType="hiring_manager">
+              <CreateJob />
+            </ProtectedRoute>
+          } />
+          <Route path="/hiring-manager/jobs/edit/:jobId" element={
+            <ProtectedRoute requiredUserType="hiring_manager">
+              <EditJob />
+            </ProtectedRoute>
+          } />
+
+          {/* Public Job Showroom */}
+          <Route
+            path="/job-showroom"
+            element={ 
+              <ProtectedRoute>
+                <JobShowroom />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* User Applications */}
+          <Route
+            path="/my-applications"
+            element={
+              <ProtectedRoute>
+                <UserApplications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-applications/:id"
+            element={
+              <ProtectedRoute>
+                <UserApplications />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Hiring Manager Applications */}
+          <Route
+            path="/hiring-manager/applications"
+            element={
+              <ProtectedRoute requiredUserType="hiring_manager">
+                <HiringManagerApplications />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Catch all route - redirect to dashboard */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <UserProvider>
-        <ErrorBoundary>
-          <div className="app-container">
-            <Navbar />
-            <main className="main-content">
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/login-options" element={<LoginOptions />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/signup-options" element={<SignupOptions />} />
-                <Route path="/hiring-manager/login" element={<HiringManagerLogin />} />
-                <Route path="/hiring-manager/signup" element={<HiringManagerSignup />} />
-                <Route path="/verify-email" element={<EmailVerification />} />
-                
-                {/* Protected Routes - Only for authenticated users */}
-                <Route path="/profile" element={
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                } />
-                <Route path="/complete-profile" element={
-                  <ProtectedRoute>
-                    <CompleteProfile />
-                  </ProtectedRoute>
-                } />
-                <Route path="/job-seeker/profile" element={
-                  <ProtectedRoute requiredUserType="job_seeker">
-                    <Profile />
-                  </ProtectedRoute>
-                } />
-                <Route path="/job-seeker/complete-profile" element={
-                  <ProtectedRoute requiredUserType="job_seeker">
-                    <CompleteProfile />
-                  </ProtectedRoute>
-                } />
-                <Route path="/hiring-manager/profile" element={
-                  <ProtectedRoute requiredUserType="hiring_manager">
-                    <HiringManagerProfile />
-                  </ProtectedRoute>
-                } />
-                <Route path="/hiring-manager/complete-profile" element={
-                  <ProtectedRoute requiredUserType="hiring_manager">
-                    <HiringManagerCompleteProfile />
-                  </ProtectedRoute>
-                } />
-
-                {/* Job Management Routes - Only for hiring managers */}
-                <Route path="/hiring-manager/jobs" element={
-                  <ProtectedRoute requiredUserType="hiring_manager">
-                    <JobsList />
-                  </ProtectedRoute>
-                } />
-                <Route path="/hiring-manager/jobs/create" element={
-                  <ProtectedRoute requiredUserType="hiring_manager">
-                    <CreateJob />
-                  </ProtectedRoute>
-                } />
-                <Route path="/hiring-manager/jobs/edit/:jobId" element={
-                  <ProtectedRoute requiredUserType="hiring_manager">
-                    <EditJob />
-                  </ProtectedRoute>
-                } />
-
-                {/* Public Job Showroom */}
-                <Route
-                  path="/job-showroom"
-                  element={ 
-                    <ProtectedRoute>
-                      <JobShowroom />
-                    </ProtectedRoute>
-                  }
-                />
-
-                {/* User Applications */}
-                <Route
-                  path="/my-applications"
-                  element={
-                    <ProtectedRoute>
-                      <UserApplications />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/my-applications/:id"
-                  element={
-                    <ProtectedRoute>
-                      <UserApplications />
-                    </ProtectedRoute>
-                  }
-                />
-
-                {/* Hiring Manager Applications */}
-                <Route
-                  path="/hiring-manager/applications"
-                  element={
-                    <ProtectedRoute requiredUserType="hiring_manager">
-                      <HiringManagerApplications />
-                    </ProtectedRoute>
-                  }
-                />
-
-                {/* Catch all route - redirect to dashboard */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </main>
-          </div>
-        </ErrorBoundary>
+        <LoadingProvider>
+          <ErrorBoundary>
+            <AppContent />
+          </ErrorBoundary>
+        </LoadingProvider>
       </UserProvider>
     </ThemeProvider>
   );

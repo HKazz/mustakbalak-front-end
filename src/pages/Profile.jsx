@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -48,243 +48,8 @@ import { useAuth } from '../context/AuthContext';
 import { format } from 'date-fns';
 import '../style/Profile.css';
 
-function Profile() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { user, logout } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [profileData, setProfileData] = useState(null);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: '',
-    severity: 'success'
-  });
-  const [originalData, setOriginalData] = useState(null);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchProfile = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          console.error('No token found in localStorage');
-          setError('Authentication error. Please log in again.');
-          setLoading(false);
-          // Redirect to appropriate login page based on user type
-          navigate(user?.userType === 'hiring_manager' ? '/hiring-manager/login' : '/login');
-          return;
-        }
-
-        // Determine the correct endpoint based on user type
-        const endpoint = user?.userType === 'hiring_manager' 
-          ? `${import.meta.env.VITE_BACKEND_URL}/api/hiring-manager/profile`
-          : `${import.meta.env.VITE_BACKEND_URL}/api/auth/profile`;
-
-        const response = await axios.get(
-          endpoint,
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          }
-        );
-
-        if (!response.data) {
-          throw new Error('No data received from server');
-        }
-
-        // Handle different response structures based on user type
-        const profileData = user?.userType === 'hiring_manager' 
-          ? response.data 
-          : response.data.user;
-
-        if (isMounted) {
-          setProfileData(profileData);
-          setOriginalData(profileData);
-          setLoading(false);
-        }
-      } catch (err) {
-        console.error('Error fetching profile:', err);
-        if (isMounted) {
-          setError(err.response?.data?.message || 'Failed to fetch profile');
-          setLoading(false);
-          // If unauthorized, redirect to appropriate login page
-          if (err.response?.status === 401) {
-            navigate(user?.userType === 'hiring_manager' ? '/hiring-manager/login' : '/login');
-          }
-        }
-      }
-    };
-
-    fetchProfile();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [navigate, user?.userType]);
-
-  useEffect(() => {
-    // Show success message if redirected from complete profile
-    if (location.state?.from === 'complete-profile') {
-      setSnackbar({
-        open: true,
-        message: 'Profile updated successfully!',
-        severity: 'success'
-      });
-    }
-  }, [location]);
-
-  const handleCloseSnackbar = () => {
-    setSnackbar(prev => ({ ...prev, open: false }));
-  };
-
-  const handleEditProfile = () => {
-    console.log('Edit button clicked');
-    try {
-      if (!user) {
-        console.log('No user found');
-        setError('Authentication error. Please log in again.');
-        return;
-      }
-
-      console.log('User type:', user.userType);
-      const editPath = user.userType === 'hiring_manager' 
-        ? '/hiring-manager/complete-profile' 
-        : '/job-seeker/complete-profile';
-
-      console.log('Navigating to:', editPath);
-      navigate(editPath, { 
-        state: { 
-          from: 'profile',
-          profileData: profileData 
-        }
-      });
-    } catch (err) {
-      console.error('Error navigating to edit profile:', err);
-      setSnackbar({
-        open: true,
-        message: 'Failed to navigate to edit profile. Please try again.',
-        severity: 'error'
-      });
-    }
-  };
-
-  const handleDeleteClick = () => {
-    console.log('Delete button clicked');
-    setDeleteDialogOpen(true);
-  };
-
-  const handleDeleteProfile = async () => {
-    console.log('Delete profile confirmed');
-    setDeleteLoading(true);
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.log('No token found');
-        setError('Authentication error. Please log in again.');
-        return;
-      }
-
-      console.log('User type:', user?.userType);
-      const endpoint = user?.userType === 'hiring_manager'
-        ? `${import.meta.env.VITE_BACKEND_URL}/api/hiring-manager/profile`
-        : `${import.meta.env.VITE_BACKEND_URL}/api/auth/profile`;
-
-      console.log('Delete endpoint:', endpoint);
-      const response = await axios.delete(
-        endpoint,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      );
-
-      console.log('Delete response:', response.data);
-      if (response.data) {
-        setSnackbar({
-          open: true,
-          message: 'Profile deleted successfully! Redirecting to complete profile...',
-          severity: 'success'
-        });
-
-        // Clear local storage and redirect after a short delay
-        setTimeout(() => {
-          localStorage.removeItem('token');
-          logout();
-          // Redirect to complete profile page based on user type
-          navigate(user?.userType === 'hiring_manager' ? '/hiring-manager/complete-profile' : '/complete-profile');
-        }, 2000);
-      }
-    } catch (err) {
-      console.error('Error deleting profile:', err);
-      const errorMessage = err.response?.data?.message || err.message || 'Failed to delete profile. Please try again.';
-      setError(errorMessage);
-      setSnackbar({
-        open: true,
-        message: errorMessage,
-        severity: 'error'
-      });
-    } finally {
-      setDeleteLoading(false);
-      setDeleteDialogOpen(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <Container className="loading-container">
-        <CircularProgress className="loading-spinner" />
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container className="alert-container">
-        <Alert severity="error" sx={{ mb: 3 }}>
-          {error}
-        </Alert>
-      </Container>
-    );
-  }
-
-  if (!profileData) {
-    return (
-      <Container className="alert-container">
-        <Alert severity="info" sx={{ mb: 3 }}>
-          No profile data found. Please complete your profile.
-        </Alert>
-      </Container>
-    );
-  }
-
-  const formatDate = (dateString) => {
-    if (!dateString) return 'Not specified';
-    try {
-      const date = new Date(dateString);
-      if (isNaN(date.getTime())) return 'Invalid date';
-      return format(date, 'MMMM d, yyyy');
-    } catch (error) {
-      console.error('Error formatting date:', error);
-      return 'Invalid date';
-    }
-  };
-
-  return (
-    <Container className="page-container">
-      <Typography variant="h4" component="h1" gutterBottom>
-        {user?.userType === 'hiring_manager' ? 'Hiring Manager Profile' : 'Profile'}
-      </Typography>
-      <Paper 
-        className="profile-card"
-        elevation={3}
-      >
-        {/* Header with Avatar */}
+// Memoized components
+const ProfileHeader = React.memo(({ profileData, user, onEdit, onDelete }) => (
         <Box sx={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
@@ -296,9 +61,7 @@ function Profile() {
           pt: 4
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Avatar 
-              className="profile-avatar"
-            >
+      <Avatar className="profile-avatar">
               {profileData?.fullName?.charAt(0) || 'U'}
             </Avatar>
             <Box>
@@ -319,7 +82,7 @@ function Profile() {
             <Button
               className="edit-button"
               variant="contained"
-              onClick={handleEditProfile}
+        onClick={onEdit}
               startIcon={<EditIcon />}
             >
               Edit Profile
@@ -328,15 +91,16 @@ function Profile() {
               className="delete-button"
               variant="outlined"
               color="error"
-              onClick={handleDeleteClick}
+        onClick={onDelete}
               startIcon={<DeleteIcon />}
             >
               Delete Profile
             </Button>
           </Box>
         </Box>
+));
 
-        {/* Basic Information */}
+const BasicInfo = React.memo(({ profileData, user, formatDate }) => (
         <Card className="profile-card">
           <CardContent className="section-content">
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -422,11 +186,9 @@ function Profile() {
             </Grid>
           </CardContent>
         </Card>
+));
 
-        {/* Only show these sections for regular users */}
-        {user?.userType !== 'hiring_manager' && (
-          <>
-            {/* Education Section */}
+const Education = React.memo(({ education, formatDate }) => (
             <Card className="profile-card">
               <CardContent className="section-content">
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -435,8 +197,8 @@ function Profile() {
                     Education
                   </Typography>
                 </Box>
-                {profileData.education && profileData.education.length > 0 ? (
-                  profileData.education.map((edu, index) => (
+      {education && education.length > 0 ? (
+        education.map((edu, index) => (
                     <Box key={index} className="info-item">
                       <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#333' }}>
                         {edu.degree} in {edu.field}
@@ -450,7 +212,7 @@ function Profile() {
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <CalendarIcon className="icon-wrapper" sx={{ fontSize: 16 }} />
                         <Typography variant="body2" color="textSecondary" sx={{ ml: 1 }}>
-                          Graduated: {formatDate(edu.graduationDate)}
+                Graduated: {edu.graduationDate ? formatDate(new Date(edu.graduationDate)) : 'Not specified'}
                         </Typography>
                       </Box>
                       {edu.description && (
@@ -458,7 +220,7 @@ function Profile() {
                           {edu.description}
                         </Typography>
                       )}
-                      {index < profileData.education.length - 1 && <Divider className="divider" />}
+            {index < education.length - 1 && <Divider className="divider" />}
                     </Box>
                   ))
                 ) : (
@@ -468,8 +230,9 @@ function Profile() {
                 )}
               </CardContent>
             </Card>
+));
 
-            {/* Work Experience Section */}
+const Experience = React.memo(({ experience, formatDate }) => (
             <Card className="profile-card">
               <CardContent className="section-content">
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -478,8 +241,8 @@ function Profile() {
                     Work Experience
                   </Typography>
                 </Box>
-                {profileData.experience && profileData.experience.length > 0 ? (
-                  profileData.experience.map((exp, index) => (
+      {experience && experience.length > 0 ? (
+        experience.map((exp, index) => (
                     <Box key={index} className="info-item">
                       <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#333' }}>
                         {exp.title}
@@ -501,7 +264,7 @@ function Profile() {
                           {exp.description}
                         </Typography>
                       )}
-                      {index < profileData.experience.length - 1 && <Divider className="divider" />}
+            {index < experience.length - 1 && <Divider className="divider" />}
                     </Box>
                   ))
                 ) : (
@@ -511,151 +274,265 @@ function Profile() {
                 )}
               </CardContent>
             </Card>
+));
 
-            {/* Certificates Section */}
-            <Card className="profile-card">
-              <CardContent className="section-content">
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <BadgeIcon className="icon-wrapper" sx={{ fontSize: 28 }} />
-                  <Typography className="section-title" variant="h6">
-                    Certificates & Qualifications
-                  </Typography>
-                </Box>
-                {profileData.certificates && profileData.certificates.length > 0 ? (
-                  profileData.certificates.map((cert, index) => (
-                    <Box key={index} className="info-item">
-                      <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#333' }}>
-                        {cert.name}
-                      </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, mb: 1 }}>
-                        <BusinessIcon className="icon-wrapper" sx={{ fontSize: 16 }} />
-                        <Typography variant="body2" color="textSecondary" sx={{ ml: 1 }}>
-                          {cert.issuer}
-                        </Typography>
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <CalendarIcon className="icon-wrapper" sx={{ fontSize: 16 }} />
-                        <Typography variant="body2" color="textSecondary" sx={{ ml: 1 }}>
-                          Issued: {formatDate(cert.date)}
-                        </Typography>
-                      </Box>
-                      {cert.description && (
-                        <Typography variant="body2" sx={{ mt: 1, color: '#666' }}>
-                          {cert.description}
-                        </Typography>
-                      )}
-                      {index < profileData.certificates.length - 1 && <Divider className="divider" />}
-                    </Box>
-                  ))
-                ) : (
-                  <Typography variant="body2" color="textSecondary">
-                    No certificates provided
-                  </Typography>
-                )}
-              </CardContent>
-            </Card>
+function Profile() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user, logout } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [profileData, setProfileData] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
 
-            {/* Fields of Interest Section */}
-            <Card className="profile-card">
-              <CardContent className="section-content">
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <InterestsIcon className="icon-wrapper" sx={{ fontSize: 28 }} />
-                  <Typography className="section-title" variant="h6">
-                    Fields of Interest
+  const formatDate = useCallback((dateString) => {
+    if (!dateString) return 'Not specified';
+    try {
+      const date = dateString instanceof Date ? dateString : new Date(dateString);
+      if (isNaN(date.getTime())) return 'Invalid date';
+      return format(date, 'MMMM d, yyyy');
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return 'Invalid date';
+    }
+  }, []);
+
+  const fetchProfile = useCallback(async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found in localStorage');
+        setError('Authentication error. Please log in again.');
+        setLoading(false);
+        navigate(user?.userType === 'hiring_manager' ? '/hiring-manager/login' : '/login');
+        return;
+      }
+
+      const endpoint = user?.userType === 'hiring_manager' 
+        ? `${import.meta.env.VITE_BACKEND_URL}/api/hiring-manager/profile`
+        : `${import.meta.env.VITE_BACKEND_URL}/api/auth/profile`;
+
+      const response = await axios.get(
+        endpoint,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+
+      if (!response.data) {
+        throw new Error('No data received from server');
+      }
+
+      const profileData = user?.userType === 'hiring_manager' 
+        ? response.data 
+        : response.data.user;
+
+      setProfileData(profileData);
+      setLoading(false);
+    } catch (err) {
+      console.error('Error fetching profile:', err);
+      setError(err.response?.data?.message || 'Failed to fetch profile');
+      setLoading(false);
+      if (err.response?.status === 401) {
+        navigate(user?.userType === 'hiring_manager' ? '/hiring-manager/login' : '/login');
+      }
+    }
+  }, [navigate, user?.userType]);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
+
+  useEffect(() => {
+    if (location.state?.from === 'complete-profile') {
+      setSnackbar({
+        open: true,
+        message: 'Profile updated successfully!',
+        severity: 'success'
+      });
+    }
+  }, [location]);
+
+  const handleEditProfile = useCallback(() => {
+    try {
+      if (!user) {
+        setError('Authentication error. Please log in again.');
+        return;
+      }
+
+      const editPath = user.userType === 'hiring_manager' 
+        ? '/hiring-manager/complete-profile' 
+        : '/job-seeker/complete-profile';
+
+      navigate(editPath, { 
+        state: { 
+          from: 'profile',
+          profileData: profileData 
+        }
+      });
+    } catch (err) {
+      console.error('Error navigating to edit profile:', err);
+      setSnackbar({
+        open: true,
+        message: 'Failed to navigate to edit profile. Please try again.',
+        severity: 'error'
+      });
+    }
+  }, [navigate, user, profileData]);
+
+  const handleDeleteClick = useCallback(() => {
+    setDeleteDialogOpen(true);
+  }, []);
+
+  const handleDeleteProfile = useCallback(async () => {
+    setDeleteLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('Authentication error. Please log in again.');
+        return;
+      }
+
+      const endpoint = user?.userType === 'hiring_manager'
+        ? `${import.meta.env.VITE_BACKEND_URL}/api/hiring-manager/profile`
+        : `${import.meta.env.VITE_BACKEND_URL}/api/auth/profile`;
+
+      const response = await axios.delete(
+        endpoint,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+
+      if (response.data) {
+        setSnackbar({
+          open: true,
+          message: 'Profile deleted successfully! Redirecting to complete profile...',
+          severity: 'success'
+        });
+
+        setTimeout(() => {
+          localStorage.removeItem('token');
+          logout();
+          navigate(user?.userType === 'hiring_manager' ? '/hiring-manager/complete-profile' : '/complete-profile');
+        }, 2000);
+      }
+    } catch (err) {
+      console.error('Error deleting profile:', err);
+      const errorMessage = err.response?.data?.message || err.message || 'Failed to delete profile. Please try again.';
+      setError(errorMessage);
+      setSnackbar({
+        open: true,
+        message: errorMessage,
+        severity: 'error'
+      });
+    } finally {
+      setDeleteLoading(false);
+      setDeleteDialogOpen(false);
+    }
+  }, [navigate, user?.userType, logout]);
+
+  const handleCloseSnackbar = useCallback(() => {
+    setSnackbar(prev => ({ ...prev, open: false }));
+  }, []);
+
+  if (loading) {
+    return (
+      <Container className="loading-container">
+        <CircularProgress className="loading-spinner" />
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container className="alert-container">
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {error}
+        </Alert>
+      </Container>
+    );
+  }
+
+  if (!profileData) {
+    return (
+      <Container className="alert-container">
+        <Alert severity="info" sx={{ mb: 3 }}>
+          No profile data found. Please complete your profile.
+        </Alert>
+      </Container>
+    );
+  }
+
+  return (
+    <Container className="page-container">
+      <Typography variant="h4" component="h1" gutterBottom>
+        {user?.userType === 'hiring_manager' ? 'Hiring Manager Profile' : 'Profile'}
                   </Typography>
-                </Box>
-                {profileData.fields && profileData.fields.length > 0 ? (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                    {profileData.fields.map((field, index) => (
-                      <Chip
-                        key={index}
-                        className="chip-item"
-                        label={field}
-                        icon={<StarIcon />}
-                      />
-                    ))}
-                  </Box>
-                ) : (
-                  <Typography variant="body2" color="textSecondary">
-                    No fields of interest specified
-                  </Typography>
-                )}
-              </CardContent>
-            </Card>
+      <Paper className="profile-card" elevation={3}>
+        <ProfileHeader
+          profileData={profileData}
+          user={user}
+          onEdit={handleEditProfile}
+          onDelete={handleDeleteClick}
+        />
+        <BasicInfo 
+          profileData={profileData} 
+          user={user} 
+          formatDate={formatDate}
+        />
+        {user?.userType !== 'hiring_manager' && (
+          <>
+            <Education 
+              education={profileData.education} 
+              formatDate={formatDate}
+            />
+            <Experience 
+              experience={profileData.experience} 
+              formatDate={formatDate}
+            />
           </>
         )}
+      </Paper>
 
-        {/* Delete Confirmation Dialog */}
         <Dialog
           open={deleteDialogOpen}
           onClose={() => setDeleteDialogOpen(false)}
-          aria-labelledby="delete-dialog-title"
-          aria-describedby="delete-dialog-description"
         >
-          <DialogTitle id="delete-dialog-title" sx={{ color: '#d32f2f' }}>
-            Delete Profile
-          </DialogTitle>
+        <DialogTitle>Delete Profile</DialogTitle>
           <DialogContent>
-            <DialogContentText id="delete-dialog-description">
-              Are you sure you want to delete your profile? This action cannot be undone and all your data will be permanently deleted.
+          <DialogContentText>
+            Are you sure you want to delete your profile? This action cannot be undone.
             </DialogContentText>
           </DialogContent>
-          <DialogActions sx={{ px: 3, pb: 3 }}>
-            <Button 
-              onClick={() => setDeleteDialogOpen(false)}
-              variant="outlined"
-              sx={{
-                borderColor: '#666',
-                color: '#666',
-                '&:hover': {
-                  borderColor: '#333',
-                  backgroundColor: 'rgba(0, 0, 0, 0.04)'
-                }
-              }}
-            >
-              Cancel
-            </Button>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
             <Button
               onClick={handleDeleteProfile}
-              variant="contained"
               color="error"
               disabled={deleteLoading}
-              sx={{
-                backgroundColor: '#d32f2f',
-                '&:hover': {
-                  backgroundColor: '#b71c1c'
-                }
-              }}
             >
               {deleteLoading ? <CircularProgress size={24} /> : 'Delete'}
             </Button>
           </DialogActions>
         </Dialog>
 
-        {/* Success/Error Snackbar */}
         <Snackbar
           open={snackbar.open}
           autoHideDuration={6000}
           onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        >
-          <Alert
-            onClose={handleCloseSnackbar}
-            severity={snackbar.severity}
-            variant="filled"
-            sx={{
-              width: '100%',
-              backgroundColor: snackbar.severity === 'success' ? '#2e7d32' : '#d32f2f',
-              '& .MuiAlert-icon': {
-                color: 'white'
-              }
-            }}
-            icon={snackbar.severity === 'success' ? <CheckCircleIcon /> : undefined}
-          >
-            {snackbar.message}
-          </Alert>
-        </Snackbar>
-      </Paper>
+        message={snackbar.message}
+      />
     </Container>
   );
 }
