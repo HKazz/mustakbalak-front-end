@@ -26,6 +26,7 @@ import {
   BusinessCenter as BusinessCenterIcon,
   Search as SearchIcon,
   Description as DescriptionIcon,
+  HelpOutline as HelpOutlineIcon,
 } from '@mui/icons-material';
 import '../style/Navbar.css';
 
@@ -138,38 +139,108 @@ const Navbar = () => {
               <Button
                 component={Link}
                 to="/job-showroom"
-                color="inherit"
-                className="navbar-button"
+                className="nav-button"
                 startIcon={<SearchIcon />}
                 sx={{
+                  color: '#fff !important',
+                  backgroundColor: '#1976d2',
+                  borderRadius: '20px',
+                  padding: '8px 20px',
+                  margin: '0 8px',
                   textTransform: 'none',
-                  fontSize: '1rem',
+                  fontSize: '0.9rem',
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                    backgroundColor: '#1565c0',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+                    color: '#fff !important'
+                  },
+                  transition: 'all 0.3s ease',
+                  '& .MuiButton-label': {
+                    color: '#fff'
+                  },
+                  '& .MuiSvgIcon-root': {
+                    fontSize: '1.2rem',
+                    marginRight: '4px',
+                    color: '#fff'
                   }
                 }}
               >
                 Browse Jobs
               </Button>
 
+              {/* FAQ Link - Logged in state */}
+              <Button
+                component={Link}
+                to="/faq"
+                color="inherit"
+                className="navbar-button"
+                startIcon={<HelpOutlineIcon />}
+                sx={{
+                  textTransform: 'none',
+                  fontSize: '1rem',
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '20px',
+                  padding: '6px 16px',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  color: '#fff !important',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    color: '#fff !important',
+                  },
+                  transition: 'all 0.2s ease-in-out',
+                  '& .MuiSvgIcon-root': {
+                    fontSize: '1.2rem',
+                    marginRight: '4px',
+                    color: '#fff',
+                  },
+                  '& .MuiButton-label': {
+                    color: '#fff',
+                  }
+                }}
+              >
+                FAQ
+              </Button>
+
               {/* My Applications Link - Only for Job Seekers */}
               {user?.userType === 'job_seeker' && (
-                <Button
-                  component={Link}
-                  to="/my-applications"
-                  color="inherit"
-                  className="navbar-button"
-                  startIcon={<DescriptionIcon />}
-                  sx={{
-                    textTransform: 'none',
-                    fontSize: '1rem',
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)'
-                    }
-                  }}
-                >
-                  My Applications
-                </Button>
+                <>
+                  <Button
+                    component={Link}
+                    to="/my-applications"
+                    className="nav-button"
+                    startIcon={<DescriptionIcon />}
+                    sx={{
+                      color: '#fff !important',
+                      backgroundColor: '#1976d2',
+                      borderRadius: '20px',
+                      padding: '8px 20px',
+                      margin: '0 8px',
+                      textTransform: 'none',
+                      fontSize: '0.9rem',
+                      '&:hover': {
+                        backgroundColor: '#1565c0',
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+                        color: '#fff !important'
+                      },
+                      transition: 'all 0.3s ease',
+                      '& .MuiButton-label': {
+                        color: '#fff'
+                      },
+                      '& .MuiSvgIcon-root': {
+                        fontSize: '1.2rem',
+                        marginRight: '4px',
+                        color: '#fff'
+                      }
+                    }}
+                  >
+                    Applications
+                  </Button>
+                </>
               )}
 
               {/* Jobs Management - Only for Hiring Managers */}
@@ -297,6 +368,15 @@ const Navbar = () => {
                 className="navbar-menu"
               >
                 <MenuItem
+                  component={Link}
+                  to="/faq"
+                  onClick={handleMenuClose}
+                  className="navbar-menu-item"
+                >
+                  <HelpOutlineIcon sx={{ mr: 1, fontSize: 20 }} />
+                  FAQ
+                </MenuItem>
+                <MenuItem
                   onClick={handleProfile}
                   className="navbar-menu-item"
                 >
@@ -339,7 +419,7 @@ const Navbar = () => {
                     className="navbar-menu-item"
                   >
                     <DescriptionIcon sx={{ mr: 1, fontSize: 20 }} />
-                    My Applications
+                    Applications
                   </MenuItem>
                 )}
                 <Divider />
@@ -351,6 +431,41 @@ const Navbar = () => {
             </>
           ) : (
             <>
+              {/* FAQ Link - Logged out state */}
+              <Button
+                component={Link}
+                to="/faq"
+                color="inherit"
+                className="navbar-button"
+                startIcon={<HelpOutlineIcon />}
+                sx={{
+                  textTransform: 'none',
+                  fontSize: '1rem',
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  borderRadius: '20px',
+                  padding: '6px 16px',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  color: '#fff !important',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    color: '#fff !important',
+                  },
+                  transition: 'all 0.2s ease-in-out',
+                  '& .MuiSvgIcon-root': {
+                    fontSize: '1.2rem',
+                    marginRight: '4px',
+                    color: '#fff',
+                  },
+                  '& .MuiButton-label': {
+                    color: '#fff',
+                  }
+                }}
+              >
+                FAQ
+              </Button>
               <Button
                 component={Link}
                 to="/login"

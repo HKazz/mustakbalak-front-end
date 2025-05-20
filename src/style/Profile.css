@@ -1,4 +1,4 @@
-/* Main container animations */
+/* Main container */
 .profile-container {
   width: 100%;
   max-width: 1400px;
@@ -80,348 +80,131 @@
   font-weight: 500 !important;
 }
 
-/* Animated background for profile details */
+/* Profile card styles */
 .profile-card {
   position: relative;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.95) !important;
+  background: #ffffff !important;
   border-radius: 16px !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
   margin-bottom: 24px;
-  transition: all 0.3s ease !important;
+  transition: transform 0.2s ease !important;
   border: 1px solid rgba(10, 102, 194, 0.1) !important;
-  pointer-events: none;
 }
 
-.profile-card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    rgba(10, 102, 194, 0.1),
-    rgba(0, 65, 130, 0.1),
-    rgba(10, 102, 194, 0.1),
-    rgba(0, 65, 130, 0.1)
-  );
-  animation: gradientMove 15s linear infinite;
-  z-index: 0;
-  pointer-events: none;
+.profile-card:hover {
+  transform: translateY(-2px);
 }
 
-.profile-card::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    -45deg,
-    rgba(255, 255, 255, 0.1),
-    rgba(10, 102, 194, 0.1),
-    rgba(255, 255, 255, 0.1),
-    rgba(0, 65, 130, 0.1)
-  );
-  animation: gradientMove 10s linear infinite reverse;
-  z-index: 0;
-  pointer-events: none;
-}
-
-@keyframes gradientMove {
-  0% {
-    transform: rotate(0deg) scale(1.5);
-  }
-  50% {
-    transform: rotate(180deg) scale(1.2);
-  }
-  100% {
-    transform: rotate(360deg) scale(1.5);
-  }
-}
-
+/* Section content */
 .section-content {
   position: relative;
-  z-index: 1;
-  background: rgba(255, 255, 255, 0.9);
+  background: #ffffff;
   border-radius: 16px;
   padding: 24px !important;
-  transition: all 0.3s ease !important;
+  transition: background-color 0.2s ease !important;
 }
 
 .section-title {
-  position: relative;
   color: #0a66c2 !important;
   font-weight: 600 !important;
   font-size: 1.25rem !important;
   margin-bottom: 16px !important;
   padding-bottom: 8px !important;
-  animation: titlePulse 3s infinite;
+  border-bottom: 2px solid #0a66c2;
 }
 
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 50px;
-  height: 3px;
-  background: linear-gradient(90deg, #0a66c2, #004182);
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-.info-item:hover + .section-title::after {
-  width: 100px;
-}
-
+/* Info items */
 .info-item {
   position: relative;
   margin-bottom: 16px;
   padding: 16px;
-  background: rgba(255, 255, 255, 0.8);
+  background: #ffffff;
   border-radius: 12px;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   border: 1px solid rgba(10, 102, 194, 0.1);
-  overflow: hidden;
-}
-
-.info-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    135deg,
-    rgba(10, 102, 194, 0.05),
-    rgba(0, 65, 130, 0.05),
-    rgba(10, 102, 194, 0.05)
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  animation: shimmerEffect 3s infinite;
 }
 
 .info-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(10, 102, 194, 0.1);
-  border-color: rgba(10, 102, 194, 0.2);
-}
-
-.info-item:hover::before {
-  opacity: 1;
-  animation: shimmerEffect 2s infinite;
 }
 
 .info-item .MuiTypography-subtitle2 {
   color: #0a66c2 !important;
   font-weight: 600 !important;
   margin-bottom: 8px !important;
-  transition: all 0.3s ease !important;
-}
-
-.info-item:hover .MuiTypography-subtitle2 {
-  color: #004182 !important;
-  transform: translateX(5px);
 }
 
 .info-item .MuiTypography-body1 {
   color: #2c3e50 !important;
   font-weight: 500 !important;
-  transition: all 0.3s ease !important;
 }
 
-.info-item:hover .MuiTypography-body1 {
-  color: #1a237e !important;
-}
-
-/* Add shimmer effect to icons */
+/* Icons */
 .icon-wrapper {
-  position: relative;
   color: #0a66c2 !important;
-  transition: all 0.3s ease !important;
+  transition: transform 0.2s ease;
 }
 
 .info-item:hover .icon-wrapper {
   transform: scale(1.1);
-  color: #004182 !important;
 }
 
-.icon-wrapper::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  transform: rotate(45deg);
-  animation: shimmer 3s infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) rotate(45deg);
-  }
-  50% {
-    transform: translateX(0%) rotate(45deg);
-  }
-  100% {
-    transform: translateX(100%) rotate(45deg);
-  }
-}
-
-.divider {
-  margin: 16px 0 !important;
-  background-color: rgba(10, 102, 194, 0.1) !important;
-  transition: all 0.3s ease !important;
-}
-
-.info-item:hover + .divider {
-  background-color: rgba(10, 102, 194, 0.2) !important;
-}
-
-.chip-item {
-  background: linear-gradient(135deg, #0a66c2, #004182) !important;
-  color: white !important;
-  font-weight: 500 !important;
-  margin: 4px !important;
-  transition: all 0.3s ease !important;
-  transform-origin: center;
-}
-
-.chip-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(10, 102, 194, 0.2);
-}
-
-.chip-item .MuiChip-icon {
-  color: #fff !important;
-  transition: all 0.3s ease !important;
-}
-
-.chip-item:hover .MuiChip-icon {
-  transform: rotate(360deg);
-}
-
-/* Profile header styling */
+/* Avatar */
 .profile-avatar {
   width: 80px !important;
   height: 80px !important;
+  background-color: #0a66c2 !important;
   font-size: 2rem !important;
-  background: linear-gradient(135deg, #0a66c2, #004182) !important;
-  color: white !important;
-  box-shadow: 0 4px 12px rgba(10, 102, 194, 0.2) !important;
-  transition: all 0.3s ease !important;
-}
-
-.profile-avatar:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(10, 102, 194, 0.3) !important;
-}
-
-/* Edit button styling */
-.edit-button {
-  background: linear-gradient(135deg, #0a66c2, #004182) !important;
-  color: white !important;
   font-weight: 600 !important;
-  text-transform: none !important;
-  padding: 8px 24px !important;
-  border-radius: 8px !important;
-  box-shadow: 0 2px 8px rgba(10, 102, 194, 0.2) !important;
-  transition: all 0.3s ease !important;
-  position: relative !important;
-  overflow: hidden !important;
-  z-index: 10 !important;
-  pointer-events: auto !important;
-  cursor: pointer !important;
 }
 
-.edit-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: all 0.5s ease;
+/* Buttons */
+.button-container {
+  display: flex;
+  gap: 12px;
+}
+
+.edit-button {
+  background-color: #0a66c2 !important;
+  color: white !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  transition: background-color 0.2s ease !important;
 }
 
 .edit-button:hover {
-  background: linear-gradient(135deg, #004182, #002d5c) !important;
-  box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3) !important;
-  transform: translateY(-2px) !important;
+  background-color: #004182 !important;
 }
 
-.edit-button:hover::before {
-  left: 100%;
-}
-
-/* Delete button styling */
 .delete-button {
   border-color: #d32f2f !important;
   color: #d32f2f !important;
-  font-weight: 600 !important;
   text-transform: none !important;
-  padding: 8px 24px !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
   border-radius: 8px !important;
-  box-shadow: 0 2px 8px rgba(211, 47, 47, 0.1) !important;
-  transition: all 0.3s ease !important;
-  position: relative !important;
-  overflow: hidden !important;
-  z-index: 10 !important;
-  pointer-events: auto !important;
-  cursor: pointer !important;
+  transition: all 0.2s ease !important;
 }
 
 .delete-button:hover {
+  background-color: rgba(211, 47, 47, 0.04) !important;
   border-color: #b71c1c !important;
-  background-color: rgba(211, 47, 47, 0.08) !important;
-  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2) !important;
-  transform: translateY(-2px) !important;
+  color: #b71c1c !important;
 }
 
-/* Fix button container */
-.button-container {
-  position: relative !important;
-  z-index: 10 !important;
-  pointer-events: auto !important;
+/* Loading and alerts */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
 }
 
-/* Ensure buttons are above other elements */
-.profile-card .MuiButton-root {
-  position: relative !important;
-  z-index: 10 !important;
-  pointer-events: auto !important;
-}
-
-/* Fix any overlapping elements */
-.profile-card::before,
-.profile-card::after {
-  pointer-events: none !important;
-}
-
-.section-content {
-  position: relative !important;
-  z-index: 1 !important;
-}
-
-/* Ensure header section is clickable */
-.profile-header {
-  position: relative !important;
-  z-index: 5 !important;
-  pointer-events: auto !important;
+.alert-container {
+  padding: 24px;
 }
 
 /* Responsive adjustments */
@@ -452,7 +235,7 @@
 
 @media (max-width: 600px) {
   .profile-container {
-    padding: 0.5rem;
+    padding: 1rem;
   }
   
   .profile-header {
@@ -465,12 +248,25 @@
   }
   
   .profile-section-content {
-    padding: 1rem !important;
+    padding: 16px !important;
   }
   
   .profile-avatar {
     width: 100px !important;
     height: 100px !important;
+  }
+
+  .profile-card {
+    margin-bottom: 16px;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .edit-button,
+  .delete-button {
+    width: 100%;
   }
 }
 
