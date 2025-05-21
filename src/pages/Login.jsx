@@ -203,7 +203,7 @@ function Login() {
           </Box>
         )}
 
-        {/* Error Message Display */}
+        {/* Error Message */}
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {error}
@@ -212,14 +212,13 @@ function Login() {
 
         {/* Login Form */}
         <Box component="form" onSubmit={handleSubmit} className="signup-form">
-          {/* Username Field */}
           <TextField
             fullWidth
+            id="username"
             name="username"
             label="Username"
             value={formData.username}
             onChange={handleChange}
-            required
             disabled={loading}
             className="form-field"
             InputProps={{
@@ -231,15 +230,14 @@ function Login() {
             }}
           />
 
-          {/* Password Field */}
           <TextField
             fullWidth
+            id="password"
             name="password"
             label="Password"
             type={showPassword ? 'text' : 'password'}
             value={formData.password}
             onChange={handleChange}
-            required
             disabled={loading}
             className="form-field"
             InputProps={{
@@ -255,6 +253,7 @@ function Login() {
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}
                     edge="end"
+                    disabled={loading}
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
@@ -263,45 +262,74 @@ function Login() {
             }}
           />
 
-          {/* Submit Button */}
           <Button
             type="submit"
-            fullWidth
             variant="contained"
-            color="primary"
+            className="signup-button"
+            fullWidth
             disabled={loading}
-            className="submit-button"
           >
-            Sign In
+            {loading ? "Signing in..." : "Sign In"}
           </Button>
-
-          {/* Sign Up Link */}
-          <Box sx={{ mt: 2, textAlign: 'center' }}>
-            <Typography variant="body2">
-              Don't have an account?{' '}
-              <Link to="/signup" style={{ textDecoration: 'none' }}>
-                Sign Up
-              </Link>
-            </Typography>
-          </Box>
         </Box>
-      </Paper>
 
-      {/* Snackbar for notifications */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert
+        {/* Divider */}
+        <Divider sx={{ my: 2 }}>
+          <Typography variant="body2" color="text.secondary">
+            OR
+          </Typography>
+        </Divider>
+
+        {/* Hiring Manager Login Option */}
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            Are you a hiring manager?
+          </Typography>
+          <Button
+            component={Link}
+            to="/hiring-manager/login"
+            variant="outlined"
+            startIcon={<BusinessIcon />}
+            fullWidth
+            disabled={loading}
+          >
+            Sign in as Hiring Manager
+          </Button>
+        </Box>
+
+        {/* Sign Up Link */}
+        <Box sx={{ mt: 2, textAlign: 'center' }}>
+          <Typography variant="body2" color="text.secondary">
+            Don't have an account?{' '}
+            <Link to="/signup" style={{ color: '#0a66c2', textDecoration: 'none' }}>
+              Sign up
+            </Link>
+          </Typography>
+        </Box>
+
+        {/* Snackbar for notifications */}
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={6000}
           onClose={handleCloseSnackbar}
-          severity={snackbar.severity}
-          sx={{ width: '100%' }}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity={snackbar.severity}
+            variant="filled"
+            sx={{
+              width: "100%",
+              backgroundColor: snackbar.severity === "success" ? "#2e7d32" : "#d32f2f",
+              "& .MuiAlert-icon": {
+                color: "white",
+              },
+            }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </Paper>
     </div>
   );
 }
