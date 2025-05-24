@@ -286,7 +286,10 @@ function Signup() {
 
       console.log("Server response:", response.data);
 
-      if (response.data.message === 'User created successfully') {
+      if (response.data.message === 'User created successfully. Please check your email for the verification code.') {
+        localStorage.setItem('verifyEmail', response.data.user.email);
+        localStorage.setItem('verifyUsername', response.data.user.username);
+
         setSnackbar({
           open: true,
           message: 'Account created successfully! Welcome to Mustakbalak. Redirecting to login...',
@@ -305,7 +308,7 @@ function Signup() {
         
         // Redirect after a delay
         setTimeout(() => {
-          navigate("/login");
+          navigate("/verify-email");
         }, 3000);
       }
     } catch (error) {

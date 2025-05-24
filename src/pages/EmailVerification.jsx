@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Paper,
@@ -27,8 +27,8 @@ function EmailVerification() {
   });
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const { email, username } = location.state || {};
+  const email = localStorage.getItem('verifyEmail');
+  const username = localStorage.getItem('verifyUsername');
 
   const handleChange = (e) => {
     setVerificationCode(e.target.value);
@@ -211,4 +211,4 @@ function EmailVerification() {
   );
 }
 
-export default EmailVerification; 
+export default EmailVerification;
